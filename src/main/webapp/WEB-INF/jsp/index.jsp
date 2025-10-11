@@ -1,6 +1,4 @@
-<%-- File: src/main/webapp/WEB-INF/jsp/index.jsp --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%-- JSP Standard Tag Library (JSTL) สำหรับการวนลูป --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <!DOCTYPE html>
@@ -10,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwapLife - ให้ของที่ไม่ได้ใช้ กลับไปมีคุณค่าอีกครั้ง</title>
     
-    <%-- เรียกใช้งาน Tailwind CSS ผ่าน CDN --%>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
