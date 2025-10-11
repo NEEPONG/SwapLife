@@ -1,4 +1,13 @@
-target/
+# ===============================
+# Build outputs
+# ===============================
+/target/
+build/
+out/
+
+# ===============================
+# Maven / Gradle backup files
+# ===============================
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -6,14 +15,52 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/timing.properties
-https://maven.apache.org/wrapper/#usage-without-binary-jar
+
+# ===============================
+# Maven Wrapper
+# ===============================
 .mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
 
-Eclipse m2e generated files
-Eclipse Core
+# ===============================
+# Eclipse / IntelliJ IDE files
+# ===============================
 .project
-JDT-specific (Eclipse Java Development Tools)
 .classpath
+.settings/
+.idea/
+*.iml
 
+# ===============================
+# OS-generated files
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Logs and temp
+# ===============================
+*.log
+logs/
+*.tmp
+*.bak
+
+# ===============================
+# Application config
+# ===============================
+# ป้องกันไม่ให้ config ส่วนตัวถูก push
 /src/main/resources/application.properties
+/src/main/resources/application.yml
+
+# ===============================
+# Frontend assets (optional)
+# ===============================
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ===============================
+# Custom
+# ===============================
+# ถ้าคุณมี uploads จากระบบ SwapLife
+/uploads/

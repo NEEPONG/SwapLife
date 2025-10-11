@@ -20,31 +20,31 @@ public class DataInitializer implements CommandLineRunner { // 2. Implement Comm
     @Override
     public void run(String... args) throws Exception {
         // 4. โค้ดในนี้จะทำงานอัตโนมัติ 1 ครั้ง ตอนแอปฯ เปิด
-        System.out.println("--- [SwapLife] เริ่มต้นสร้างข้อมูลหมวดหมู่ (Categories) ---");
+//        System.out.println("--- [SwapLife] เริ่มต้นสร้างข้อมูลหมวดหมู่ (Categories) ---");
 
-        // สร้าง Object Category ที่ 1: เสื้อผ้า
-        Category cat1 = new Category();
-        cat1.setName("เสื้อผ้า");
-        cat1.setDescription("เสื้อผ้าแฟชั่น, ชุดทำงาน, และเครื่องแต่งกายต่างๆ");
-        cat1.setImageUrl("/images/categories/clothing.jpg");
+//        // สร้าง Object Category ที่ 1: เสื้อผ้า
+//        Category cat1 = new Category();
+//        cat1.setName("เสื้อผ้า");
+//        cat1.setDescription("เสื้อผ้าแฟชั่น, ชุดทำงาน, และเครื่องแต่งกายต่างๆ");
+//        cat1.setImageUrl("/images/categories/clothing.jpg");
+//
+//        // สร้าง Object Category ที่ 2: เครื่องใช้ไฟฟ้า
+//        Category cat2 = new Category();
+//        cat2.setName("เครื่องใช้ไฟฟ้า");
+//        cat2.setDescription("อุปกรณ์อิเล็กทรอนิกส์และเครื่องใช้ไฟฟ้าภายในบ้าน");
+//        cat2.setImageUrl("/images/categories/electronics.jpg");
+//
+//        // สร้าง Object Category ที่ 3: หนังสือ
+//        Category cat3 = new Category();
+//        cat3.setName("หนังสือ");
+//        cat3.setDescription("หนังสือ, นิตยสาร, และการ์ตูน");
+//        cat3.setImageUrl("/images/categories/books.jpg");
+//
+//        // 5. บันทึก Object ทั้งหมดลงฐานข้อมูล
+//        categoryRepository.save(cat1);
+//        categoryRepository.save(cat2);
+//        categoryRepository.save(cat3);
 
-        // สร้าง Object Category ที่ 2: เครื่องใช้ไฟฟ้า
-        Category cat2 = new Category();
-        cat2.setName("เครื่องใช้ไฟฟ้า");
-        cat2.setDescription("อุปกรณ์อิเล็กทรอนิกส์และเครื่องใช้ไฟฟ้าภายในบ้าน");
-        cat2.setImageUrl("/images/categories/electronics.jpg");
-
-        // สร้าง Object Category ที่ 3: หนังสือ
-        Category cat3 = new Category();
-        cat3.setName("หนังสือ");
-        cat3.setDescription("หนังสือ, นิตยสาร, และการ์ตูน");
-        cat3.setImageUrl("/images/categories/books.jpg");
-
-        // 5. บันทึก Object ทั้งหมดลงฐานข้อมูล
-        categoryRepository.save(cat1);
-        categoryRepository.save(cat2);
-        categoryRepository.save(cat3);
-
-        System.out.println("--- [SwapLife] บันทึกข้อมูลหมวดหมู่ 3 รายการเรียบร้อยแล้ว ---");
+//        System.out.println("--- [SwapLife] บันทึกข้อมูลหมวดหมู่ 3 รายการเรียบร้อยแล้ว ---");
     }
 }
