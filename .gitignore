@@ -15,3 +15,5 @@ Eclipse Core
 .project
 JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+/src/main/resources/application.properties
