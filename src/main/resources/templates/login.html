@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เข้าสู่ระบบ | SwapLife</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+
+<style>
+body {
+	font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+</style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md">
+		<div class="max-w-6xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+						class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+					</a>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/register}"
+						class="py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300">สมัครสมาชิก</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Login Section -->
+	<section class="flex-grow flex items-center justify-center">
+		<div
+			class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md mx-4 mt-10">
+			<h2 class="text-3xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ</h2>
+
+			<!-- Error message -->
+			<div th:if="${param.error}"
+				class="bg-red-100 text-red-700 p-3 rounded mb-4 text-center">
+				ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+
+			<!-- Login form -->
+			<form th:action="@{/login}" method="post" class="space-y-5">
+				<div>
+					<label for="username" class="block text-gray-700 mb-1">ชื่อผู้ใช้</label>
+					<input type="text" id="username" name="username" required
+						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+				</div>
+
+				<div>
+					<label for="password" class="block text-gray-700 mb-1">รหัสผ่าน</label>
+					<input type="password" id="password" name="password" required
+						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+				</div>
+
+				<button type="submit"
+					class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 font-semibold">
+					เข้าสู่ระบบ</button>
+			</form>
+
+			<p class="mt-6 text-center text-gray-600">
+				ยังไม่มีบัญชี? <a th:href="@{/register}"
+					class="text-green-600 hover:underline font-semibold">สมัครสมาชิก</a>
+			</p>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 text-white py-6 mt-auto">
+		<div class="text-center">
+			<p>&copy; 2025 SwapLife. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+</body>
+</html>

@@ -1,51 +1,41 @@
 package com.springboot.service;
 
-import com.springboot.model.User;
-import com.springboot.repository.UserRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.springboot.dto.UserDTO;
+import com.springboot.model.User;
+import com.springboot.repository.UserRepository;
+
 @Service
 public class UserService {
+	@Autowired
+    private UserRepository userRepository;
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    // ฉีด (Inject) PasswordEncoder ที่เราสร้างไว้ใน Bean เข้ามาใช้งาน
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private PasswordEncoder passwordEncoder;
 
-    /**
-     * เมธอดสำหรับลงทะเบียนผู้ใช้ใหม่
-     * @param username ชื่อผู้ใช้
-     * @param rawPassword รหัสผ่านแบบดิบ (ยังไม่เข้ารหัส)
-     * @return User ที่บันทึกแล้ว
-     */
-    public User registerNewUser(String username, String rawPassword) {
-        User newUser = new User();
-        newUser.setUsername(username);
-        
-        // --- นี่คือส่วนที่ทันสมัย ---
-        // 1. เข้ารหัสผ่านด้วย BCrypt (มันจะสร้าง Salt และ Hash ให้เอง)
-        String hashedPassword = passwordEncoder.encode(rawPassword);
-        newUser.setPasswordHash(hashedPassword);
-        
-        // 2. บันทึกลงฐานข้อมูล
-        return userRepository.save(newUser);
+    public void registerUser(User user) {
+    	if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("ชื่อผู้ใช้นี้ถูกใช้งานแล้ว");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("อีเมลล์นี้ถูกใช้งานแล้ว");
+        }
+        // เข้ารหัส password ก่อนบันทึก
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        userRepository.save(user);
     }
-
-    /**
-     * เมธอดสำหรับตรวจสอบรหัสผ่านตอน Login
-     * @param rawPassword รหัสผ่านที่ผู้ใช้กรอก
-     * @param hashedPassword รหัสผ่านที่เข้ารหัสแล้วจากฐานข้อมูล
-     * @return true ถ้ารหัสผ่านถูกต้อง, false ถ้าไม่ถูกต้อง
-     */
-    public boolean checkPassword(String rawPassword, String hashedPassword) {
-        // --- และนี่คือส่วนที่ใช้ตรวจสอบ ---
-        return passwordEncoder.matches(rawPassword, hashedPassword);
+    
+    public UserDTO getUserProfile(String username) {
+        return userRepository.findUserDTOByUsername(username)
+                .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
+    }
+    
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 }
