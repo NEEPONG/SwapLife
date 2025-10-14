@@ -51,11 +51,6 @@ body {
 				class="bg-red-100 text-red-700 p-3 rounded mb-4 text-center">
 				ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
 
-			<!-- Logout message -->
-			<div th:if="${param.logout}"
-				class="bg-green-100 text-green-700 p-3 rounded mb-4 text-center">
-				ออกจากระบบเรียบร้อยแล้ว</div>
-
 			<!-- Login form -->
 			<form th:action="@{/login}" method="post" class="space-y-5">
 				<div>

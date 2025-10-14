@@ -46,21 +46,8 @@ logs/
 *.bak
 
 # ===============================
-# Application config
-# ===============================
-# ป้องกันไม่ให้ config ส่วนตัวถูก push
-/src/main/resources/application.properties
-/src/main/resources/application.yml
-
-# ===============================
 # Frontend assets (optional)
 # ===============================
 node_modules/
 npm-debug.log
 yarn-error.log
-
-# ===============================
-# Custom
-# ===============================
-# ถ้าคุณมี uploads จากระบบ SwapLife
-/uploads/

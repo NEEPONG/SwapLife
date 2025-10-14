@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SwapLife - ให้ของที่ไม่ได้ใช้ กลับไปมีคุณค่าอีกครั้ง</title>
+<title>SwapLife - Profile</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -27,17 +27,17 @@ body {
 			<div class="flex justify-between">
 				<div class="flex space-x-7">
 					<div>
-						<a th:href="@{/'/'}" class="flex items-center py-4 px-2"> <span
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
 							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
 						</a>
 					</div>
 				</div>
 				<div class="hidden md:flex items-center space-x-3">
-					<a th:href="@{/'/'}"
+					<a th:href="@{/}"
 						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">🏠
 						หน้าแรก</a> <a th:href="@{/swap}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
-						แลกของ</a> <a th:href="@{/post}"
+						รายการสิ่งของ</a> <a th:href="@{/post}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
 						โพสต์ของ</a> <a th:href="@{/profile}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
@@ -56,39 +56,24 @@ body {
 		</div>
 	</nav>
 
-	<!-- Header -->
-	<header class="bg-green-600 text-white text-center py-20">
-		<div class="container mx-auto px-4">
-			<h1 class="text-5xl font-bold mb-4">ของเก่าคุณ =
-				ของใหม่ของใครอีกคน</h1>
-			<p class="text-xl mb-8">ให้ของที่ไม่ได้ใช้
-				กลับไปมีคุณค่าอีกครั้งกับ SwapLife</p>
-			<div class="space-x-4">
-				<a th:href="@{/browse}"
-					class="bg-white text-green-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-200 transition duration-300">
-					เริ่มแลกของเลย </a> <a th:href="@{/post}"
-					class="bg-green-800 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-green-900 transition duration-300">
-					โพสต์ของของคุณ </a>
-			</div>
-		</div>
-	</header>
-
-	<!-- Categories Section -->
 	<section class="py-16">
-		<div class="container mx-auto px-4">
-			<h2 class="text-3xl font-bold text-center text-gray-800 mb-10">หมวดหมู่ยอดนิยม</h2>
+		<div
+			class="container mx-auto px-4 max-w-xl bg-white rounded-xl shadow-lg p-8">
+			<h2 class="text-3xl font-bold text-center text-gray-800 mb-8">โปรไฟล์ของฉัน</h2>
 
-			<!-- วนลูปข้อมูลหมวดหมู่ -->
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-				<div th:each="category : ${popularCategories}"
-					class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
-					<img th:src="${category.imageUrl}" th:alt="${category.name}"
-						class="w-full h-48 object-cover">
-					<div class="p-4 text-center">
-						<h3 class="font-bold text-xl text-gray-700"
-							th:text="${category.name}">ชื่อหมวดหมู่</h3>
-					</div>
-				</div>
+			<div class="space-y-4 text-gray-700">
+				<p>
+					<strong>ชื่อผู้ใช้:</strong> <span th:text="${user.username}">username</span>
+				</p>
+				<p>
+					<strong>ชื่อจริง:</strong> <span th:text="${user.firstName}">ชื่อ</span>
+				</p>
+				<p>
+					<strong>นามสกุล:</strong> <span th:text="${user.lastName}">นามสกุล</span>
+				</p>
+				<p>
+					<strong>อีเมล:</strong> <span th:text="${user.email}">email</span>
+				</p>
 			</div>
 		</div>
 	</section>
