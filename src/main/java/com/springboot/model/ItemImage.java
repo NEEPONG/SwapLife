@@ -15,10 +15,10 @@ public class ItemImage {
     @Column(nullable = false)
     private String imageUrl;
 
-    private boolean isThumbnail;
+    private boolean thumbnail;
 
     // รูปภาพหลายรูป อยู่ใน Item ชิ้นเดียว (Many-to-One)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "itemId", nullable = false)
     private Item item;
 }
