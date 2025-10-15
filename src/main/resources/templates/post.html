@@ -34,10 +34,14 @@ body {
 			</div>
 			<div class="hidden md:flex items-center space-x-3">
 				<a th:href="@{/}"
-					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition">🏠
-					หน้าแรก</a> <a th:href="@{/items/post}"
-					class="py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">➕
-					โพสต์สิ่งของ</a>
+					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+					หน้าแรก</a> <a th:href="@{/swap}"
+					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
+					รายการสิ่งของ</a> <a th:href="@{/items/post}"
+					class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">➕
+					โพสต์ของ</a> <a th:href="@{/profile}"
+					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
+					โปรไฟล์</a>
 			</div>
 		</div>
 	</nav>
@@ -46,7 +50,7 @@ body {
 	<section class="flex-grow">
 		<div
 			class="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8 mt-10 mb-10">
-			<h2 class="text-3xl font-bold text-center text-gray-800 mb-8">เพิ่มสิ่งของของคุณ</h2>
+			<h2 class="text-3xl font-bold text-center text-gray-800 mb-8">โพสต์สิ่งของคุณ</h2>
 
 			<!-- แสดง Success Message -->
 			<div th:if="${successMessage}"
