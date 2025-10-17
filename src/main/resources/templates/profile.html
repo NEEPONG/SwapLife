@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SwapLife - โปรไฟล์ของฉัน</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -14,100 +16,99 @@ body {
 }
 </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-gray-50 to-green-50">
 
 	<!-- Navbar -->
-	<nav class="bg-white shadow-sm">
-		<div
-			class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-			<a th:href="@{/}" class="font-bold text-gray-800 text-xl">SwapLife
-				🌍</a>
-			<div class="hidden md:flex items-center gap-6 text-sm">
-				<a th:href="@{/}" class="text-gray-600 hover:text-green-600">🏠
-					หน้าแรก</a> <a th:href="@{/items/swap}"
-					class="text-gray-600 hover:text-green-600">🔁 รายการสิ่งของ</a> <a
-					th:href="@{/items/post}" class="text-gray-600 hover:text-green-600">➕
-					โพสต์ของ</a> <a th:href="@{/profile}"
-					class="text-green-600 font-semibold border-b-2 border-green-600">👤
-					โปรไฟล์</a>
+	<nav class="bg-white shadow-md sticky top-0 z-50">
+		<div class="max-w-7xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+						class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+					</a>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/items/list}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
+						รายการสิ่งของ</a> <a th:href="@{/items/post}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
+						โพสต์ของ</a> <a th:href="@{/profile}"
+						class="py-4 px-2 text-green-500 font-semibold border-b-4 border-green-500 transition duration-300">👤
+						โปรไฟล์</a>
+				</div>
 			</div>
 		</div>
 	</nav>
 
-	<!-- Main -->
-	<div class="max-w-[1200px] mx-auto px-4 py-8 grid grid-cols-12 gap-6">
-
-		<!-- Left: Sidebar -->
+	<!-- Content -->
+	<div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-12 gap-6">
+		<!-- Sidebar -->
 		<aside class="col-span-12 md:col-span-3">
-			<div class="bg-white rounded-lg border">
-				<div class="p-4 flex items-center gap-3 border-b">
+			<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+				<div class="p-5 flex items-center gap-3 border-b">
 					<div
-						class="w-12 h-12 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
+						class="w-14 h-14 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
 						<img th:if="${user.profilePictureUrl}"
 							th:src="${user.profilePictureUrl}"
 							class="w-full h-full object-cover" alt=""> <span
 							th:if="${user.profilePictureUrl == null}"
-							class="text-xl text-gray-400">👤</span>
+							class="text-2xl text-gray-400">👤</span>
 					</div>
 					<div>
-						<div class="font-semibold" th:text="${user.username}">username</div>
+						<div class="font-semibold text-gray-800"
+							th:text="${user.username}">username</div>
 						<a th:href="@{/profile/edit}"
 							class="text-xs text-green-600 hover:underline">✏️
 							แก้ไขข้อมูลส่วนตัว</a>
 					</div>
 				</div>
 
-				<nav class="p-2 text-sm">
+				<nav class="p-3 text-sm">
 					<a th:href="@{/profile}"
-						class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
-						<span>👤</span> บัญชีของฉัน
-					</a> <a th:href="@{/items/mine}"
-						class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
-						<span>📦</span> ของที่ฉันโพสต์
-					</a> <a th:href="@{/notifications}"
-						class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
-						<span>🔔</span> การแจ้งเตือน
-					</a> <a th:href="@{/coupons}"
-						class="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-gray-700">
-						<span>🎟️</span> โค้ดส่วนลดของฉัน
-					</a>
+						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👤</span>
+						บัญชีของฉัน</a> <a th:href="@{/items/mine}"
+						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>📦</span>
+						ของที่ฉันโพสต์</a> <a th:href="@{/notifications}"
+						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🔔</span>
+						การแจ้งเตือน</a> <a th:href="@{/coupons}"
+						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🎟️</span>
+						โค้ดส่วนลดของฉัน</a>
 				</nav>
 			</div>
 		</aside>
 
-		<!-- Right: Content -->
+		<!-- Main Content -->
 		<section class="col-span-12 md:col-span-9">
-			<div class="bg-white rounded-lg border">
-				<!-- Tabs -->
-				<div class="px-4 pt-3">
+			<div class="bg-white rounded-2xl shadow-lg">
+				<div class="px-6 pt-4">
 					<div class="flex gap-6 text-sm border-b">
 						<button
-							class="py-3 -mb-px border-b-2 border-red-500 text-red-500 font-medium">All</button>
-						<button class="py-3 text-gray-600 hover:text-gray-900">ที่ต้องชำระ</button>
-						<button class="py-3 text-gray-600 hover:text-gray-900">ที่ต้องจัดส่ง</button>
-						<button class="py-3 text-gray-600 hover:text-gray-900">ที่ต้องได้รับ</button>
-						<button class="py-3 text-gray-600 hover:text-gray-900">สำเร็จแล้ว</button>
-						<button class="py-3 text-gray-600 hover:text-gray-900">ยกเลิก</button>
+							class="py-3 -mb-px border-b-2 border-green-500 text-green-600 font-semibold">ทั้งหมด</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องชำระ</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องจัดส่ง</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องได้รับ</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">สำเร็จแล้ว</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">ยกเลิก</button>
 					</div>
 				</div>
 
-				<!-- Search bar -->
-				<div class="px-4 py-3 border-b">
+				<div class="px-6 py-4 border-b">
 					<div class="relative">
 						<input type="text"
-							placeholder="คุณสามารถค้นหาโดยใช้ชื่อผู้ขาย หมายเลขคำสั่งซื้อ หรือชื่อสินค้า"
-							class="w-full h-10 pl-10 pr-3 rounded border focus:outline-none focus:ring-1 focus:ring-green-500">
+							placeholder="ค้นหาชื่อผู้ขาย หมายเลขคำสั่งซื้อ หรือชื่อสินค้า"
+							class="w-full h-10 pl-10 pr-3 rounded-full border-2 border-gray-200 focus:ring-2 focus:ring-green-400 focus:outline-none transition">
 						<svg
 							class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
 							viewBox="0 0 24 24" fill="none">
-              <path
-								d="M21 21l-4.3-4.3M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"
+							<path d="M21 21l-4.3-4.3M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"
 								stroke="currentColor" stroke-width="2" />
-            </svg>
+						</svg>
 					</div>
 				</div>
 
-				<!-- Content / Empty state -->
 				<div
 					class="p-10 flex flex-col items-center justify-center text-center text-gray-500">
 					<img src="https://cdn-icons-png.flaticon.com/512/7486/7486749.png"
@@ -119,10 +120,13 @@ body {
 	</div>
 
 	<!-- Footer -->
-	<footer class="bg-gray-800 text-white py-8 mt-12">
-		<div class="max-w-7xl mx-auto text-center">
-			<p>&copy; 2025 SwapLife. All Rights Reserved.</p>
+	<footer class="bg-gray-800 text-white py-8 mt-16">
+		<div class="container mx-auto text-center">
+			<p class="mb-2">&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="text-sm text-gray-400">ให้ของที่ไม่ได้ใช้
+				กลับไปมีคุณค่าอีกครั้ง 🌍</p>
 		</div>
 	</footer>
+
 </body>
 </html>
