@@ -12,6 +12,16 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
 	rel="stylesheet">
+<link rel="icon" type="image/png"
+	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
+<link rel="icon" type="image/svg+xml"
+	th:href="@{/assets/images/favicon/favicon.svg}">
+<link rel="shortcut icon"
+	th:href="@{/assets/images/favicon/favicon.ico}">
+<link rel="apple-touch-icon" sizes="180x180"
+	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
+<link rel="manifest"
+	th:href="@{/assets/images/favicon/site.webmanifest}">
 
 <style>
 body {
@@ -37,7 +47,7 @@ body {
 						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">🏠
 						หน้าแรก</a> <a th:href="@{/swap}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
-						รายการสิ่งของ</a> <a th:href="@{/post}"
+						รายการสิ่งของ</a> <a th:href="@{/items/post}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
 						โพสต์ของ</a> <a th:href="@{/profile}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
@@ -56,42 +66,44 @@ body {
 		</div>
 	</nav>
 
-	<!-- Header -->
-	<header class="bg-green-600 text-white text-center py-20">
-		<div class="container mx-auto px-4">
-			<h1 class="text-5xl font-bold mb-4">ของเก่าคุณ =
-				ของใหม่ของใครอีกคน</h1>
-			<p class="text-xl mb-8">ให้ของที่ไม่ได้ใช้
-				กลับไปมีคุณค่าอีกครั้งกับ SwapLife</p>
-			<div class="space-x-4">
-				<a th:href="@{/browse}"
-					class="bg-white text-green-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-200 transition duration-300">
-					เริ่มแลกของเลย </a> <a th:href="@{/post}"
-					class="bg-green-800 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-green-900 transition duration-300">
-					โพสต์ของของคุณ </a>
+	<div class="max-w-7xl mx-auto px-6 mt-4">
+		<!-- Header -->
+		<header class="bg-green-600 text-white text-center py-20 rounded-2xl">
+			<div class="container mx-auto px-4">
+				<h1 class="text-5xl font-bold mb-4">ของเก่าคุณ =
+					ของใหม่ของใครอีกคน</h1>
+				<p class="text-xl mb-8">ให้ของที่ไม่ได้ใช้
+					กลับไปมีคุณค่าอีกครั้งกับ SwapLife</p>
+				<div class="space-x-4">
+					<a th:href="@{/browse}"
+						class="bg-white text-green-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-200 transition duration-300">
+						เริ่มแลกของเลย </a> <a th:href="@{/post}"
+						class="bg-green-800 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-green-900 transition duration-300">
+						โพสต์ของของคุณ </a>
+				</div>
 			</div>
-		</div>
-	</header>
+		</header>
 
-	<!-- Categories Section -->
-	<section class="py-16">
-		<div class="container mx-auto px-4">
-			<h2 class="text-3xl font-bold text-center text-gray-800 mb-10">หมวดหมู่สิ่งของยอดนิยม</h2>
+		<!-- Categories Section -->
+		<section class="py-16">
+			<div class="container mx-auto px-4">
+				<h2 class="text-3xl font-bold text-center text-gray-800 mb-10">หมวดหมู่สิ่งของยอดนิยม</h2>
 
-			<!-- วนลูปข้อมูลหมวดหมู่ -->
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-				<div th:each="category : ${popularCategories}"
-					class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
-					<img th:src="${category.imageUrl}" th:alt="${category.name}"
-						class="w-full h-48 object-cover">
-					<div class="p-4 text-center">
-						<h3 class="font-bold text-xl text-gray-700"
-							th:text="${category.name}">ชื่อหมวดหมู่</h3>
+				<!-- วนลูปข้อมูลหมวดหมู่ -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+					<div th:each="category : ${popularCategories}"
+						class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+						<img th:src="${category.imageUrl}" th:alt="${category.name}"
+							class="w-full h-48 object-cover">
+						<div class="p-4 text-center">
+							<h3 class="font-bold text-xl text-gray-700"
+								th:text="${category.name}">ชื่อหมวดหมู่</h3>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 
 	<!-- Footer -->
 	<footer class="bg-gray-800 text-white py-8">

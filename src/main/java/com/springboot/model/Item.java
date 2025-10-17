@@ -1,62 +1,71 @@
 package com.springboot.model;
 
-import com.springboot.model.enums.*;
 import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.springboot.model.enums.ItemCondition;
+import com.springboot.model.enums.ItemStatus;
+import com.springboot.model.enums.ListingType;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
-@Table(name = "items")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer itemId;
 
+    @NotBlank(message = "กรุณากรอกชื่อสินค้า")
     @Column(nullable = false)
     private String title;
 
+    @NotBlank(message = "กรุณากรอกคำอธิบายสินค้า")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Enumerated(EnumType.STRING) // เก็บ Enum เป็น String ในฐานข้อมูล
-    @Column(nullable = false)
+    @NotNull(message = "กรุณาระบุสภาพสิ่งของ")
+    @Enumerated(EnumType.STRING)
     private ItemCondition itemCondition;
 
+    @NotNull(message = "กรุณาระบุประเภทการลงประกาศ")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ListingType listingType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ItemStatus status = ItemStatus.ว่าง; // กำหนดค่าเริ่มต้น
+    private ItemStatus status = ItemStatus.ว่าง;
 
-    @Column(columnDefinition = "TEXT")
     private String desiredItems;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt = null;
 
-    // --- ความสัมพันธ์ (Relationships) ---
-
-    // Item หลายชิ้น อยู่ใน User คนเดียว (Many-to-One)
+    // ความสัมพันธ์
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // ระบุ Foreign Key
+    @JoinColumn(name = "userId", nullable = false)
+    @NotNull(message = "กรุณาเข้าสู่ระบบก่อนเพิ่มสินค้า")
     private User user;
 
-    // Item หลายชิ้น อยู่ใน Category เดียว (Many-to-One)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "categoryId", nullable = false)
+    @NotNull(message = "กรุณาเลือกหมวดหมู่")
     private Category category;
 
-    // Item หนึ่งชิ้น มีได้หลายรูป (One-to-Many)
+    // ✅ ไม่ต้องมี @NotNull เพราะเราจะสร้าง ItemImage ใน Service
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemImage> images;
+    private List<ItemImage> images = new ArrayList<>();
 }

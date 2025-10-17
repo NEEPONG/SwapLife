@@ -15,4 +15,13 @@ public class CategoryService {
     public List<Category> getPopularCategories() {
         return categoryRepository.findTop10Categories();
     }
+    
+    public List<Category> getAllCategories() {
+    	return categoryRepository.findAll();
+    }
+    
+    public Category getCategoryById(int id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ไม่พบหมวดหมู่ที่ ID: " + id));
+    }
 }
