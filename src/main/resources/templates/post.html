@@ -12,8 +12,19 @@
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"
 	rel="stylesheet">
 
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
 <link rel="icon" type="image/png"
 	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
+<link rel="icon" type="image/svg+xml"
+	th:href="@{/assets/images/favicon/favicon.svg}">
+<link rel="shortcut icon"
+	th:href="@{/assets/images/favicon/favicon.ico}">
+<link rel="apple-touch-icon" sizes="180x180"
+	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
+<link rel="manifest"
+	th:href="@{/assets/images/favicon/site.webmanifest}">
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -189,22 +200,35 @@ to {
 
 	<!-- Navbar -->
 	<nav class="bg-white shadow-md">
-		<div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
-			<div>
-				<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
-					class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
-				</a>
-			</div>
-			<div class="hidden md:flex items-center space-x-3">
-				<a th:href="@{/}"
-					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
-					หน้าแรก</a> <a th:href="@{/items/list}"
-					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔄
-					รายการสิ่งของ</a> <a th:href="@{/items/post}"
-					class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">➕
-					โพสต์ของ</a> <a th:href="@{/profile}"
-					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
-					โปรไฟล์</a>
+		<div class="max-w-6xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<div>
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+						</a>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/items/list}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">📦
+						รายการสิ่งของ</a> <a th:href="@{/items/post}"
+						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">➕
+						โพสต์ของ</a> <a th:href="@{/profile}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
+						โปรไฟล์</a>
+				</div>
+				<div class="md:hidden flex items-center">
+					<button class="outline-none mobile-menu-button">
+						<svg class="w-6 h-6 text-gray-500" fill="none"
+							stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+					</button>
+				</div>
 			</div>
 		</div>
 	</nav>

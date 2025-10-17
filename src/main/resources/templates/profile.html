@@ -10,6 +10,21 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
 	rel="stylesheet">
+	
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+<link rel="icon" type="image/png"
+	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
+<link rel="icon" type="image/svg+xml"
+	th:href="@{/assets/images/favicon/favicon.svg}">
+<link rel="shortcut icon"
+	th:href="@{/assets/images/favicon/favicon.ico}">
+<link rel="apple-touch-icon" sizes="180x180"
+	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
+<link rel="manifest"
+	th:href="@{/assets/images/favicon/site.webmanifest}">
+	
 <style>
 body {
 	font-family: 'IBM Plex Sans Thai', sans-serif;
@@ -20,24 +35,35 @@ body {
 <body class="bg-gradient-to-br from-gray-50 to-green-50">
 
 	<!-- Navbar -->
-	<nav class="bg-white shadow-md sticky top-0 z-50">
-		<div class="max-w-7xl mx-auto px-4">
+	<nav class="bg-white shadow-md">
+		<div class="max-w-6xl mx-auto px-4">
 			<div class="flex justify-between">
 				<div class="flex space-x-7">
-					<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
-						class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
-					</a>
+					<div>
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+						</a>
+					</div>
 				</div>
 				<div class="hidden md:flex items-center space-x-3">
 					<a th:href="@{/}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
 						หน้าแรก</a> <a th:href="@{/items/list}"
-						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">📦
 						รายการสิ่งของ</a> <a th:href="@{/items/post}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
 						โพสต์ของ</a> <a th:href="@{/profile}"
-						class="py-4 px-2 text-green-500 font-semibold border-b-4 border-green-500 transition duration-300">👤
+						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">👤
 						โปรไฟล์</a>
+				</div>
+				<div class="md:hidden flex items-center">
+					<button class="outline-none mobile-menu-button">
+						<svg class="w-6 h-6 text-gray-500" fill="none"
+							stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -73,9 +99,7 @@ body {
 						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>📦</span>
 						ของที่ฉันโพสต์</a> <a th:href="@{/notifications}"
 						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🔔</span>
-						การแจ้งเตือน</a> <a th:href="@{/coupons}"
-						class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🎟️</span>
-						โค้ดส่วนลดของฉัน</a>
+						การแจ้งเตือน</a>
 				</nav>
 			</div>
 		</aside>
@@ -87,25 +111,9 @@ body {
 					<div class="flex gap-6 text-sm border-b">
 						<button
 							class="py-3 -mb-px border-b-2 border-green-500 text-green-600 font-semibold">ทั้งหมด</button>
-						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องชำระ</button>
-						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องจัดส่ง</button>
-						<button class="py-3 text-gray-600 hover:text-green-600 transition">ที่ต้องได้รับ</button>
-						<button class="py-3 text-gray-600 hover:text-green-600 transition">สำเร็จแล้ว</button>
-						<button class="py-3 text-gray-600 hover:text-green-600 transition">ยกเลิก</button>
-					</div>
-				</div>
-
-				<div class="px-6 py-4 border-b">
-					<div class="relative">
-						<input type="text"
-							placeholder="ค้นหาชื่อผู้ขาย หมายเลขคำสั่งซื้อ หรือชื่อสินค้า"
-							class="w-full h-10 pl-10 pr-3 rounded-full border-2 border-gray-200 focus:ring-2 focus:ring-green-400 focus:outline-none transition">
-						<svg
-							class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-							viewBox="0 0 24 24" fill="none">
-							<path d="M21 21l-4.3-4.3M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"
-								stroke="currentColor" stroke-width="2" />
-						</svg>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">รอคำร้องขอ</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">คำร้องขอ</button>
+						<button class="py-3 text-gray-600 hover:text-green-600 transition">แลกเปลี่ยนสำเร็จ</button>
 					</div>
 				</div>
 
