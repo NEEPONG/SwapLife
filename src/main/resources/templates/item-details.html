@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwapLife - โปรไฟล์ของฉัน</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+<link rel="icon" type="image/png"
+	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
+<link rel="icon" type="image/svg+xml"
+	th:href="@{/assets/images/favicon/favicon.svg}">
+<link rel="shortcut icon"
+	th:href="@{/assets/images/favicon/favicon.ico}">
+<link rel="apple-touch-icon" sizes="180x180"
+	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
+<link rel="manifest"
+	th:href="@{/assets/images/favicon/site.webmanifest}">
+
+<style>
+body {
+	font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+</style>
+</head>
+
+<body
+	class="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md">
+		<div class="max-w-6xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<div>
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+						</a>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/items/list}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">📦
+						รายการสิ่งของ</a> <a th:href="@{/items/post}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
+						โพสต์ของ</a> <a th:href="@{/profile}"
+						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">👤
+						โปรไฟล์</a>
+				</div>
+				<div class="md:hidden flex items-center">
+					<button class="outline-none mobile-menu-button">
+						<svg class="w-6 h-6 text-gray-500" fill="none"
+							stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Content -->
+	<main class="flex-grow">
+		<section class="max-w-6xl mx-auto px-6 py-12">
+			<div class="bg-white rounded-2xl shadow-lg p-8">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+					<!-- 🔹 ภาพสินค้า -->
+					<div>
+						<img th:src="${item.thumbnailUrl}" alt="ภาพสินค้า"
+							class="w-full h-80 object-cover rounded-xl shadow-lg mb-4">
+
+						<!-- 🔹 แสดงภาพเสริม -->
+						<div class="flex flex-wrap gap-3">
+							<img th:each="img : ${item.images}" th:src="${img.imageUrl}"
+								th:if="${!img.thumbnail}"
+								class="w-24 h-24 object-cover rounded-lg shadow hover:scale-105 transition duration-300 cursor-pointer" />
+						</div>
+					</div>
+
+					<!-- 🔹 รายละเอียดสินค้า -->
+					<div>
+						<h1 class="text-3xl font-bold text-gray-800 mb-3"
+							th:text="${item.title}">ชื่อสินค้า</h1>
+						<p class="text-gray-600 text-base leading-relaxed mb-6"
+							th:text="${item.description}">รายละเอียดสินค้า...</p>
+
+						<!-- 🔸 ข้อมูลเพิ่มเติม -->
+						<div class="grid grid-cols-2 gap-4 text-gray-700 mb-6">
+							<p>
+								<strong>หมวดหมู่:</strong> <span th:text="${item.category.name}">หมวดหมู่</span>
+							</p>
+							<p>
+								<strong>สภาพสิ่งของ:</strong> <span
+									th:text="${item.itemCondition}">ใหม่</span>
+							</p>
+							<p>
+								<strong>ประเภท:</strong> <span th:text="${item.listingType}">แลกเปลี่ยน</span>
+							</p>
+							<p>
+								<strong>สถานะ:</strong> <span th:text="${item.status}">ว่าง</span>
+							</p>
+						</div>
+
+						<!-- 🔹 สิ่งที่อยากแลก -->
+						<div class="mb-6">
+							<h3 class="text-lg font-semibold text-gray-800 mb-2">สิ่งที่อยากแลก</h3>
+							<p class="text-gray-700 italic"
+								th:text="${item.desiredItems != null && !#strings.isEmpty(item.desiredItems) ? item.desiredItems : '—'}">หนังสือ,
+								รองเท้า</p>
+						</div>
+
+						<!-- 🔹 เจ้าของสินค้า -->
+						<div class="flex items-center space-x-4 mb-8">
+							<div
+								class="w-12 h-12 bg-green-500 text-white flex items-center justify-center rounded-full text-lg font-bold"
+								th:text="${item.user.username.substring(0,1).toUpperCase()}">A</div>
+							<div>
+								<p class="font-semibold text-gray-800"
+									th:text="${item.user.firstName != null && item.user.firstName != '' ? item.user.firstName : item.user.username}">
+									ชื่อผู้ใช้</p>
+								<p class="text-sm text-gray-500"
+									th:text="${#temporals.format(item.createdAt, 'dd/MM/yyyy HH:mm')}">
+									วันที่โพสต์</p>
+							</div>
+						</div>
+
+						<!-- 🔹 ปุ่มการทำงาน -->
+						<div class="flex gap-4">
+							<a th:if="${item.listingType == 'แลกเปลี่ยน'}"
+								th:href="@{/swap/offer(itemId=${item.itemId})}"
+								class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+								🔄 ขอแลกเปลี่ยน </a> <a th:if="${item.listingType == 'บริจาค'}"
+								th:href="@{/donate/request(itemId=${item.itemId})}"
+								class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+								🎁 ขอรับบริจาค </a> <a th:href="@{/swap}"
+								class="border border-gray-400 text-gray-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition duration-300">
+								⬅ กลับไปหน้ารายการ </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 text-white py-8 mt-16">
+		<div class="container mx-auto text-center">
+			<p class="mb-2">&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="text-sm text-gray-400">ให้ของที่ไม่ได้ใช้
+				กลับไปมีคุณค่าอีกครั้ง 🌍</p>
+		</div>
+	</footer>
+
+</body>
+</html>

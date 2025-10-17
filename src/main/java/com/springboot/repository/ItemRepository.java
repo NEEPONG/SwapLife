@@ -1,6 +1,8 @@
 package com.springboot.repository;
 
 import com.springboot.model.Item;
+import com.springboot.model.User;
+import com.springboot.model.enums.ItemStatus;
 
 import java.util.List;
 
@@ -42,4 +44,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	                               @Param("type") String type,
 	                               @Param("category") String category,
 	                               @Param("condition") String condition);
+	
+	List<Item> findByUserOrderByCreatedAtDesc(User user);
+	
+	List<Item> findByUserAndStatusOrderByCreatedAtDesc(User user, ItemStatus status);
+
 }
