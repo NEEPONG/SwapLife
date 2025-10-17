@@ -178,223 +178,55 @@ body {
 				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
 				id="itemsGrid">
 
-				<!-- Item Card 1 - Example -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="swap" data-category="electronics">
+				<!-- Dynamic: render items from model -->
+				<div th:if="${items == null or #lists.isEmpty(items)}"
+					class="col-span-full text-center text-gray-500 py-12">
+					ยังไม่มีรายการสินค้า</div>
+
+				<div th:each="item : ${items}"
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col"
+					th:attr="data-type=${item.listingType == 'แลกเปลี่ยน' ? 'swap' : 'donate'}, data-category=${item.category.name}">
+
 					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
-							alt="หูฟัง" class="w-full h-48 object-cover"> <span
-							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🔄 แลกเปลี่ยน </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
-							สภาพดี </span>
+						<img th:src="${item.thumbnailUrl}" th:alt="${item.title}"
+							class="w-full h-48 object-cover"> <span
+							th:classappend="${item.listingType == 'แลกเปลี่ยน' ? 'badge-swap' : 'badge-donate'} 
+         + ' absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full'"
+							th:text="${item.listingType}"></span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full"
+							th:text="${item.itemCondition}"></span>
 					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">หูฟังบลูทูธ
-							Sony WH-1000XM4</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">หูฟังตัดเสียงรบกวนคุณภาพสูง
-							ใช้งานได้ดี สภาพ 90%</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">📱 อิเล็กทรอนิกส์</span> <span
-								class="text-xs text-gray-500">⏰ 2 ชั่วโมงที่แล้ว</span>
+
+					<!-- 🔹 ส่วนเนื้อหาที่ fix ความสูง -->
+					<div class="p-5 flex flex-col justify-between h-[200px]">
+						<div>
+							<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1"
+								th:text="${item.title}">Title</h3>
+							<p class="text-gray-600 text-sm mb-3 line-clamp-2"
+								th:text="${item.description}">Description</p>
+							<div class="flex items-center justify-between mb-3">
+								<span class="text-xs text-gray-500"
+									th:text="${item.category.name}">Category</span> <span
+									class="text-xs text-gray-500"
+									th:text="${item.createdAt != null ? item.createdAt.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}">Date</span>
+							</div>
 						</div>
+
 						<div class="border-t pt-3 flex items-center justify-between">
 							<div class="flex items-center space-x-2">
 								<div
-									class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									A</div>
-								<span class="text-sm text-gray-700 font-medium">สมชาย</span>
+									class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm"
+									th:text="${item.user.firstName.substring(0,1).toUpperCase()}">First Char of Name</div>
+								<span class="text-sm text-gray-700 font-medium"
+									th:text="${item.user.firstName != null && item.user.firstName != '' ? item.user.firstName : item.user.username}">User</span>
 							</div>
-							<button
+							<a th:href="@{/items/{id}(id=${item.itemId})}"
 								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
+								ดูรายละเอียด </a>
 						</div>
 					</div>
 				</div>
-
-				<!-- Item Card 2 -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="donate" data-category="books">
-					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
-							alt="หนังสือ" class="w-full h-48 object-cover"> <span
-							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🎁 บริจาค </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
-							ใหม่มาก </span>
-					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">หนังสือนิยายแฮรี่
-							พอตเตอร์ ชุดสมบูรณ์</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">หนังสือเล่มภาษาไทย
-							ครบทุกเล่ม สภาพดีมาก</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">📚 หนังสือ</span> <span
-								class="text-xs text-gray-500">⏰ 5 ชั่วโมงที่แล้ว</span>
-						</div>
-						<div class="border-t pt-3 flex items-center justify-between">
-							<div class="flex items-center space-x-2">
-								<div
-									class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									B</div>
-								<span class="text-sm text-gray-700 font-medium">สมหญิง</span>
-							</div>
-							<button
-								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
-						</div>
-					</div>
-				</div>
-
-				<!-- Item Card 3 -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="swap" data-category="fashion">
-					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=300&fit=crop"
-							alt="เสื้อผ้า" class="w-full h-48 object-cover"> <span
-							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🔄 แลกเปลี่ยน </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
-							สภาพดี </span>
-					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">เสื้อแบรนด์เนม
-							Uniqlo</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">เสื้อยืดสีขาว
-							ไซส์ M ใส่ไม่กี่ครั้ง</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">👕 เสื้อผ้า</span> <span
-								class="text-xs text-gray-500">⏰ 1 วันที่แล้ว</span>
-						</div>
-						<div class="border-t pt-3 flex items-center justify-between">
-							<div class="flex items-center space-x-2">
-								<div
-									class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									C</div>
-								<span class="text-sm text-gray-700 font-medium">สมศรี</span>
-							</div>
-							<button
-								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
-						</div>
-					</div>
-				</div>
-
-				<!-- Item Card 4 -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="donate" data-category="home">
-					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop"
-							alt="โคมไฟ" class="w-full h-48 object-cover"> <span
-							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🎁 บริจาค </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
-							สภาพดีมาก </span>
-					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">โคมไฟตั้งโต๊ะสไตล์โมเดิร์น</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">โคมไฟอ่านหนังสือ
-							ปรับระดับได้ ใช้งานปกติ</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">🏠 ของใช้ในบ้าน</span> <span
-								class="text-xs text-gray-500">⏰ 3 วันที่แล้ว</span>
-						</div>
-						<div class="border-t pt-3 flex items-center justify-between">
-							<div class="flex items-center space-x-2">
-								<div
-									class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									D</div>
-								<span class="text-sm text-gray-700 font-medium">สมพร</span>
-							</div>
-							<button
-								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
-						</div>
-					</div>
-				</div>
-
-				<!-- Item Card 5 -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="swap" data-category="toys">
-					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=300&fit=crop"
-							alt="ของเล่น" class="w-full h-48 object-cover"> <span
-							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🔄 แลกเปลี่ยน </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
-							สภาพดี </span>
-					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">ตุ๊กตา
-							Teddy Bear ขนาดใหญ่</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">ตุ๊กตาหมีขนนุ่ม
-							สูง 60 ซม. สะอาดดี</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">🧸 ของเล่น</span> <span
-								class="text-xs text-gray-500">⏰ 1 สัปดาห์ที่แล้ว</span>
-						</div>
-						<div class="border-t pt-3 flex items-center justify-between">
-							<div class="flex items-center space-x-2">
-								<div
-									class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									E</div>
-								<span class="text-sm text-gray-700 font-medium">สมใจ</span>
-							</div>
-							<button
-								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
-						</div>
-					</div>
-				</div>
-
-				<!-- Item Card 6 -->
-				<div
-					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
-					data-type="donate" data-category="electronics">
-					<div class="relative">
-						<img
-							src="https://images.unsplash.com/photo-1585298723682-7115561c51b7?w=400&h=300&fit=crop"
-							alt="คีย์บอร์ด" class="w-full h-48 object-cover"> <span
-							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
-							🎁 บริจาค </span> <span
-							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
-							พร้อมใช้งาน </span>
-					</div>
-					<div class="p-5">
-						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">คีย์บอร์ดเกมมิ่ง
-							RGB</h3>
-						<p class="text-gray-600 text-sm mb-3 line-clamp-2">คีย์บอร์ดมีไฟ
-							RGB ใช้งานได้ดี</p>
-						<div class="flex items-center justify-between mb-3">
-							<span class="text-xs text-gray-500">📱 อิเล็กทรอนิกส์</span> <span
-								class="text-xs text-gray-500">⏰ 2 วันที่แล้ว</span>
-						</div>
-						<div class="border-t pt-3 flex items-center justify-between">
-							<div class="flex items-center space-x-2">
-								<div
-									class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-									F</div>
-								<span class="text-sm text-gray-700 font-medium">สมหมาย</span>
-							</div>
-							<button
-								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
-								ดูรายละเอียด</button>
-						</div>
-					</div>
-				</div>
-
 			</div>
-
 		</div>
 	</section>
 

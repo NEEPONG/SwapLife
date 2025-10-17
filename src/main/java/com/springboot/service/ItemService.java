@@ -103,4 +103,20 @@ public class ItemService {
 			throw new RuntimeException("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + e.getMessage(), e);
 		}
 	}
+
+	// New: ดึงรายการ Item ทั้งหมดจากฐานข้อมูล และ initialize ความสัมพันธ์ที่เป็น LAZY
+	@Transactional(readOnly = true)
+	public List<Item> getAllItems() {
+		List<Item> items = itemRepository.findAll();
+		// บังคับให้ JPA โหลดความสัมพันธ์ LAZY ก่อนส่งกลับไปยัง view
+		items.forEach(i -> {
+			if (i.getImages() != null)
+				i.getImages().size();
+			if (i.getUser() != null)
+				i.getUser().getUsername();
+			if (i.getCategory() != null)
+				i.getCategory().getName();
+		});
+		return items;
+	}
 }

@@ -22,6 +22,9 @@ public class PageController {
 	 	@Autowired
 	 	private UserService userService;
 
+	    @Autowired
+	    private com.springboot.service.ItemService itemService;
+
 	    @GetMapping("/")
 	    public String showHomePage(Model model) {
 	        List<Category> popularCategories = categoryService.getPopularCategories();
@@ -44,6 +47,8 @@ public class PageController {
 	    
 	    @GetMapping("/swap")
 	    public String showListPage(Model model) {
+	        // ดึงรายการสินค้าจากฐานข้อมูล
+	        model.addAttribute("items", itemService.getAllItems());
 	        return "list"; // ✅ ชื่อไฟล์ HTML ที่จะไป render
 	    }
 }
