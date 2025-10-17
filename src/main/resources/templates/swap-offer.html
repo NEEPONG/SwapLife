@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ขอแลกเปลี่ยน | SwapLife</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+body {
+	font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+</style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md">
+		<div class="max-w-6xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<div>
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+						</a>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/items/list}"
+						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">📦
+						รายการสิ่งของ</a> <a th:href="@{/items/post}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
+						โพสต์ของ</a> <a th:href="@{/profile}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
+						โปรไฟล์</a>
+				</div>
+				<div class="md:hidden flex items-center">
+					<button class="outline-none mobile-menu-button">
+						<svg class="w-6 h-6 text-gray-500" fill="none"
+							stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Content -->
+	<main class="flex-grow container mx-auto px-4 py-10 max-w-5xl">
+		<div class="bg-white shadow-lg rounded-2xl p-8">
+
+			<!-- สินค้าที่ต้องการแลก -->
+			<div class="flex flex-col md:flex-row items-start gap-8">
+				<img th:src="${targetItem.thumbnailUrl}" alt="ภาพสินค้า"
+					class="w-full md:w-1/3 h-64 object-cover rounded-xl shadow-md">
+				<div class="flex-1">
+					<h2 class="text-3xl font-bold text-gray-800 mb-2"
+						th:text="${targetItem.title}">ชื่อสินค้า</h2>
+					<p class="text-gray-600 mb-3" th:text="${targetItem.description}">คำอธิบายสินค้า</p>
+					<p class="text-sm text-gray-500">
+						<span class="font-semibold text-green-600">หมวดหมู่:</span> <span
+							th:text="${targetItem.category.name}">ประเภทสินค้า</span>
+					</p>
+					<p class="text-sm text-gray-500">
+						<span class="font-semibold text-green-600">สภาพ:</span> <span
+							th:text="${targetItem.itemCondition}">สภาพสินค้า</span>
+					</p>
+					<p class="text-sm text-gray-500 mt-2">
+						<span class="font-semibold text-green-600">เจ้าของ:</span> <span
+							th:text="${targetItem.user.firstName}">ชื่อเจ้าของ</span>
+					</p>
+				</div>
+			</div>
+
+			<hr class="my-8 border-gray-200">
+
+			<!-- แบบฟอร์มเสนอแลก -->
+			<form th:action="@{/swap/offer}" method="post" class="mt-6"
+				onsubmit="return confirmOffer(event)">
+				<input type="hidden" name="targetItemId"
+					th:value="${targetItem.itemId}" />
+
+				<h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">เลือกสิ่งของของคุณเพื่อแลกเปลี่ยน</h3>
+
+				<div class="mb-5">
+					<label class="block text-gray-700 font-medium mb-2">สิ่งของของฉัน</label>
+					<select name="offeredItemId" required
+						class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none">
+						<option value="">-- เลือกสิ่งของของคุณ --</option>
+						<option th:each="item : ${userItems}" th:value="${item.itemId}"
+							th:text="${item.title}"></option>
+					</select>
+				</div>
+
+				<div class="mb-5">
+					<label class="block text-gray-700 font-medium mb-2">ข้อความเพิ่มเติม
+						(ถ้ามี)</label>
+					<textarea name="message" rows="4"
+						placeholder="เพิ่มข้อความเสนอ เช่น 'อยากแลกกับหนังสือของคุณครับ'"
+						class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
+				</div>
+
+				<div class="text-center">
+					<button type="submit"
+						class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition duration-300">
+						✅ ส่งคำร้องขอแลกเปลี่ยน</button>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 text-white py-8 mt-12">
+		<div class="container mx-auto text-center">
+			<p class="mb-2">&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="text-sm text-gray-400">ให้ของที่ไม่ได้ใช้
+				กลับไปมีคุณค่าอีกครั้ง 🌍</p>
+		</div>
+	</footer>
+</body>
+<script th:src="@{/assets/js/offer.js}"></script>
+</html>
