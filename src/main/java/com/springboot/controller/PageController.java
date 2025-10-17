@@ -22,6 +22,9 @@ public class PageController {
 	 	@Autowired
 	 	private UserService userService;
 
+	    @Autowired
+	    private com.springboot.service.ItemService itemService;
+
 	    @GetMapping("/")
 	    public String showHomePage(Model model) {
 	        List<Category> popularCategories = categoryService.getPopularCategories();

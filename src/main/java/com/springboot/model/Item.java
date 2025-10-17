@@ -68,4 +68,15 @@ public class Item {
     // ✅ ไม่ต้องมี @NotNull เพราะเราจะสร้าง ItemImage ใน Service
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemImage> images = new ArrayList<>();
+
+    // convenience getter for template: return thumbnail image URL or first image or placeholder
+    public String getThumbnailUrl() {
+        if (images != null && !images.isEmpty()) {
+            for (ItemImage img : images) {
+                if (img.isThumbnail()) return img.getImageUrl();
+            }
+            return images.get(0).getImageUrl();
+        }
+        return "/images/placeholder.png";
+    }
 }

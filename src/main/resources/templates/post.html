@@ -9,19 +9,182 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"
 	rel="stylesheet">
 
 <link rel="icon" type="image/png"
 	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 body {
 	font-family: 'IBM Plex Sans Thai', sans-serif;
 }
+
+.upload-zone {
+	border: 2px dashed #d1d5db;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.upload-zone:hover {
+	border-color: #16a34a;
+	background: rgba(22, 163, 74, 0.05);
+	transform: translateY(-2px);
+}
+
+.upload-zone.drag-over {
+	border-color: #16a34a;
+	background: rgba(22, 163, 74, 0.1);
+}
+
+.image-preview-item {
+	position: relative;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	animation: fadeInScale 0.4s ease;
+}
+
+@keyframes fadeInScale {from { opacity:0;
+	transform: scale(0.8);
+}
+
+to {
+	opacity: 1;
+	transform: scale(1);
+}
+
+}
+.image-preview-item:hover {
+	transform: scale(1.05);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.image-preview-item .remove-btn {
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.image-preview-item:hover .remove-btn {
+	opacity: 1;
+}
+
+input:focus, textarea:focus, select:focus {
+	outline: none;
+	border-color: #16a34a;
+	box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.form-section {
+	animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {from { opacity:0;
+	transform: translateY(30px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+.submit-btn {
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+}
+
+.submit-btn:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 10px 20px rgba(22, 163, 74, 0.3);
+}
+
+.submit-btn:active {
+	transform: translateY(-1px);
+}
+
+.thumbnail-badge {
+	background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+.additional-badge {
+	background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.input-icon {
+	pointer-events: none;
+	transition: all 0.3s ease;
+}
+
+.form-group:focus-within .input-icon {
+	color: #16a34a;
+	transform: scale(1.1);
+}
+
+.radio-card {
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.radio-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+input[type="radio"]:checked+.radio-card {
+	border-color: #16a34a;
+	background: rgba(22, 163, 74, 0.05);
+	box-shadow: 0 8px 16px rgba(22, 163, 74, 0.2);
+}
+
+.step-indicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+	color: white;
+	font-weight: bold;
+	box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
+}
+
+.tips-card {
+	transition: all 0.3s ease;
+}
+
+.tips-card:hover {
+	transform: translateX(8px);
+	color: #16a34a;
+}
+
+select {
+	background-image:
+		url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2316a34a%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e');
+	background-repeat: no-repeat;
+	background-position: right 1rem center;
+	background-size: 1.2em;
+	appearance: none;
+}
+
+.success-message, .error-message {
+	animation: slideInDown 0.5s ease;
+}
+
+@keyframes slideInDown {from { opacity:0;
+	transform: translateY(-20px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+}
 </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body class="bg-gray-50 flex flex-col min-h-screen">
 
 	<!-- Navbar -->
@@ -29,14 +192,14 @@ body {
 		<div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
 			<div>
 				<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
-					class="font-bold text-gray-700 text-2xl">SwapLife 🌏</span>
+					class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
 				</a>
 			</div>
 			<div class="hidden md:flex items-center space-x-3">
 				<a th:href="@{/}"
 					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
-					หน้าแรก</a> <a th:href="@{/swap}"
-					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
+					หน้าแรก</a> <a th:href="@{/items/swap}"
+					class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔄
 					รายการสิ่งของ</a> <a th:href="@{/items/post}"
 					class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">➕
 					โพสต์ของ</a> <a th:href="@{/profile}"
@@ -47,125 +210,263 @@ body {
 	</nav>
 
 	<!-- Post Item Form -->
-	<section class="flex-grow">
-		<div
-			class="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8 mt-10 mb-10">
-			<h2 class="text-3xl font-bold text-center text-gray-800 mb-8">โพสต์สิ่งของคุณ</h2>
+	<section class="flex-grow py-10 px-4">
+		<div class="max-w-5xl mx-auto">
+
+			<!-- Header Section -->
+			<div class="text-center mb-10 form-section">
+				<h2 class="text-4xl font-bold text-gray-800 mb-3">📦
+					โพสต์สิ่งของของคุณ</h2>
+				<p class="text-gray-600 text-lg">
+					แชร์สิ่งของที่คุณต้องการแลกเปลี่ยนหรือบริจาคกับชุมชน</p>
+			</div>
 
 			<!-- แสดง Success Message -->
 			<div th:if="${successMessage}"
-				class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-				<span th:text="${successMessage}"></span>
+				class="success-message bg-green-100 border-l-4 border-green-500 text-green-700 px-6 py-4 rounded-lg mb-6 shadow-md">
+				<div class="flex items-center">
+					<span class="text-2xl mr-3">✅</span> <span
+						th:text="${successMessage}" class="font-medium"></span>
+				</div>
 			</div>
 
 			<!-- แสดง Error Message -->
 			<div th:if="${errorMessage}"
-				class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-				<span th:text="${errorMessage}"></span>
+				class="error-message bg-red-100 border-l-4 border-red-500 text-red-700 px-6 py-4 rounded-lg mb-6 shadow-md">
+				<div class="flex items-center">
+					<span class="text-2xl mr-3">⚠️</span> <span
+						th:text="${errorMessage}" class="font-medium"></span>
+				</div>
 			</div>
 
-			<form th:action="@{/items/add}" method="post"
-				enctype="multipart/form-data" class="space-y-6"
-				onsubmit="return validateImages(event)">
+			<!-- Form Card -->
+			<div class="bg-white shadow-2xl rounded-2xl p-8 md:p-10 form-section">
 
-				<!-- ชื่อสินค้า -->
-				<div>
-					<label for="title" class="block text-gray-700 mb-1">ชื่อสินค้า</label>
-					<input type="text" id="title" name="title" th:value="${item.title}"
-						required
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-				</div>
+				<form th:action="@{/items/add}" method="post"
+					enctype="multipart/form-data" class="space-y-8"
+					onsubmit="return validateImages(event)">
 
-				<!-- อัปโหลดรูปภาพ -->
-				<div>
-					<label class="block text-gray-700 mb-2">ภาพประกอบสินค้า</label>
+					<!-- Step 1: ข้อมูลพื้นฐาน -->
+					<div class="border-b pb-8">
+						<div class="flex items-center mb-6">
+							<div class="step-indicator mr-4">1</div>
+							<h3 class="text-2xl font-bold text-gray-800">ข้อมูลพื้นฐาน</h3>
+						</div>
 
-					<!-- ภาพหลัก (thumbnail) -->
-					<div class="mb-4">
-						<label class="block text-sm text-gray-600 mb-1">ภาพหลัก
-							(Thumbnail) <span class="text-red-500">*</span>
-						</label> <input type="file" id="thumbnail" name="thumbnail"
-							accept="image/*" required
-							class="w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2"
-							onchange="previewThumbnail(event)">
-						<div id="thumbnailPreview" class="mt-3"></div>
+						<!-- ชื่อสิ่งของ -->
+						<div class="form-group mb-6">
+							<label for="title"
+								class="flex items-center text-gray-800 font-semibold mb-2">
+								<span class="input-icon text-xl mr-2 text-gray-500">📝</span>
+								ชื่อสิ่งของ <span class="text-red-500 ml-1">*</span>
+							</label> <input type="text" id="title" name="title"
+								th:value="${item.title}" required
+								placeholder="เช่น iPhone 13 Pro Max สีดำ 128GB"
+								class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all duration-300">
+						</div>
+
+						<!-- คำอธิบาย -->
+						<div class="form-group">
+							<label for="description"
+								class="flex items-center text-gray-800 font-semibold mb-2">
+								<span class="input-icon text-xl mr-2 text-gray-500">📄</span>
+								คำอธิบายสิ่งของ <span class="text-red-500 ml-1">*</span>
+							</label>
+							<textarea id="description" name="description"
+								th:text="${item.description}" rows="5" required
+								placeholder="บอกรายละเอียดเกี่ยวกับสิ่งของของคุณ เช่น อายุการใช้งาน สภาพ เหตุผลที่ต้องการแลก..."
+								class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all duration-300 resize-none"></textarea>
+							<p class="text-gray-500 text-sm mt-2">💡 ยิ่งอธิบายละเอียด
+								โอกาสแลกสำเร็จยิ่งสูง</p>
+						</div>
 					</div>
 
-					<!-- ภาพเสริม -->
+					<!-- Step 2: รูปภาพ -->
+					<div class="border-b pb-8">
+						<div class="flex items-center mb-6">
+							<div class="step-indicator mr-4">2</div>
+							<h3 class="text-2xl font-bold text-gray-800">รูปภาพสิ่งของ</h3>
+						</div>
+
+						<div class="grid md:grid-cols-2 gap-6">
+							<!-- ภาพหลัก (Thumbnail) -->
+							<div
+								class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl">
+								<div class="flex items-center mb-4">
+									<span
+										class="thumbnail-badge text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+										รูปหลัก </span> <span class="text-red-500 ml-2 font-bold">*</span>
+								</div>
+
+								<div
+									class="upload-zone rounded-xl p-8 text-center cursor-pointer bg-white"
+									onclick="document.getElementById('thumbnail').click()">
+									<div class="text-5xl mb-3">🖼️</div>
+									<p class="text-gray-700 font-semibold mb-1">คลิกเพื่ออัปโหลด</p>
+									<p class="text-gray-500 text-sm">รูปปกของสิ่งของ</p>
+								</div>
+								<input type="file" id="thumbnail" name="thumbnail"
+									accept="image/*" required class="hidden"
+									onchange="previewThumbnail(event)">
+								<div id="thumbnailPreview" class="mt-4"></div>
+							</div>
+
+							<!-- ภาพเสริม -->
+							<div
+								class="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl">
+								<div class="flex items-center mb-4">
+									<span
+										class="additional-badge text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+										รูปเพิ่มเติม </span> <span class="text-gray-500 text-sm ml-3">(สูงสุด
+										4 รูป)</span> <span class="text-red-500 ml-2 font-bold">*</span>
+								</div>
+
+								<div
+									class="upload-zone rounded-xl p-8 text-center cursor-pointer bg-white"
+									onclick="document.getElementById('images').click()">
+									<div class="text-5xl mb-3">📷</div>
+									<p class="text-gray-700 font-semibold mb-1">เพิ่มรูปภาพ</p>
+									<p class="text-gray-500 text-sm">แสดงมุมมองต่างๆ</p>
+								</div>
+								<input type="file" id="images" name="images" accept="image/*"
+									multiple required class="hidden"
+									onchange="previewImages(event)">
+								<div id="imagesPreview" class="mt-4 grid grid-cols-2 gap-3"></div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Step 3: รายละเอียด -->
+					<div class="border-b pb-8">
+						<div class="flex items-center mb-6">
+							<div class="step-indicator mr-4">3</div>
+							<h3 class="text-2xl font-bold text-gray-800">รายละเอียดเพิ่มเติม</h3>
+						</div>
+
+						<div class="grid md:grid-cols-2 gap-6">
+
+							<!-- สภาพสิ่งของ -->
+							<div class="form-group">
+								<label for="itemCondition"
+									class="flex items-center text-gray-800 font-semibold mb-2">
+									<span class="input-icon text-xl mr-2 text-gray-500">⭐</span>
+									สภาพสิ่งของ <span class="text-red-500 ml-1">*</span>
+								</label> <select id="itemCondition" name="itemCondition" required
+									class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all duration-300 cursor-pointer">
+									<option value="">-- กรุณาเลือกสภาพ --</option>
+									<option value="ใหม่"
+										th:selected="${item.itemCondition?.name() == 'ใหม่'}">✨
+										ใหม่</option>
+									<option value="เหมือนใหม่"
+										th:selected="${item.itemCondition?.name() == 'เหมือนใหม่'}">💎
+										เหมือนใหม่</option>
+									<option value="ใช้งานแล้ว"
+										th:selected="${item.itemCondition?.name() == 'ใช้งานแล้ว'}">📦
+										ใช้งานแล้ว</option>
+								</select>
+							</div>
+
+							<!-- หมวดหมู่ -->
+							<div class="form-group">
+								<label for="category_id"
+									class="flex items-center text-gray-800 font-semibold mb-2">
+									<span class="input-icon text-xl mr-2 text-gray-500">🏷️</span>
+									หมวดหมู่ <span class="text-red-500 ml-1">*</span>
+								</label> <select id="category_id" name="categoryId" required
+									class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all duration-300 cursor-pointer">
+									<option value="">-- กรุณาเลือกหมวดหมู่ --</option>
+									<option th:each="cat : ${categories}"
+										th:value="${cat.categoryId}" th:text="${cat.name}"
+										th:selected="${item.category?.categoryId == cat.categoryId}"></option>
+								</select>
+							</div>
+						</div>
+
+						<!-- สิ่งที่อยากแลก -->
+						<div class="form-group mt-6">
+							<label for="desiredItems"
+								class="flex items-center text-gray-800 font-semibold mb-2">
+								<span class="input-icon text-xl mr-2 text-gray-500">🎯</span>
+								สิ่งที่อยากแลก
+							</label> <input type="text" id="desiredItems" name="desiredItems"
+								th:value="${item.desiredItems}"
+								placeholder="เช่น หนังสือ, รองเท้าผ้าใบ, ของใช้ทั่วไป"
+								class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all duration-300">
+							<p class="text-gray-500 text-sm mt-2">💡
+								ระบุสิ่งที่คุณสนใจจะแลกเพื่อเพิ่มโอกาสหาคู่แลก</p>
+						</div>
+					</div>
+
+					<!-- Step 4: ประเภทการลงประกาศ -->
 					<div>
-						<label class="block text-sm text-gray-600 mb-1">ภาพเสริม
-							(สูงสุด 4 รูป) <span class="text-red-500">*</span>
-						</label> <input type="file" id="images" name="images" accept="image/*"
-							multiple required
-							class="w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2"
-							onchange="previewImages(event)">
-						<div id="imagesPreview" class="mt-3 flex flex-wrap gap-3"></div>
+						<div class="flex items-center mb-6">
+							<div class="step-indicator mr-4">4</div>
+							<h3 class="text-2xl font-bold text-gray-800">ประเภทการลงประกาศ</h3>
+						</div>
+
+						<div class="form-group">
+							<label class="flex items-center text-gray-800 font-semibold mb-4">
+								<span class="input-icon text-xl mr-2 text-gray-500">🔖</span>
+								เลือกประเภท <span class="text-red-500 ml-1">*</span>
+							</label>
+
+							<div class="grid sm:grid-cols-2 gap-6">
+								<label class="relative cursor-pointer"> <input
+									type="radio" id="listingType1" name="listingType"
+									value="แลกเปลี่ยน" class="sr-only peer" required
+									th:checked="${item.listingType?.name() == 'แลกเปลี่ยน'}">
+									<div
+										class="radio-card border-2 border-gray-300 rounded-xl p-6 text-center bg-white">
+										<div class="text-5xl mb-3">🔄</div>
+										<div class="font-bold text-gray-800 text-lg mb-1">แลกเปลี่ยน</div>
+										<div class="text-sm text-gray-500">แลกของกับของ</div>
+									</div>
+								</label> <label class="relative cursor-pointer"> <input
+									type="radio" id="listingType2" name="listingType"
+									value="บริจาค" class="sr-only peer" required
+									th:checked="${item.listingType?.name() == 'บริจาค'}">
+									<div
+										class="radio-card border-2 border-gray-300 rounded-xl p-6 text-center bg-white">
+										<div class="text-5xl mb-3">🎁</div>
+										<div class="font-bold text-gray-800 text-lg mb-1">บริจาค</div>
+										<div class="text-sm text-gray-500">ให้ฟรีไม่หวังผลตอบแทน</div>
+									</div>
+								</label>
+							</div>
+						</div>
 					</div>
-				</div>
 
-				<!-- คำอธิบาย -->
-				<div>
-					<label for="description" class="block text-gray-700 mb-1">คำอธิบายสินค้า</label>
-					<textarea id="description" name="description"
-						th:text="${item.description}" rows="4" required
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
-				</div>
+					<!-- Submit Button -->
+					<button type="submit"
+						class="submit-btn w-full bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center space-x-2">
+						<span>✅</span> <span>เพิ่มสิ่งของ</span>
+					</button>
 
-				<!-- สิ่งที่อยากแลก -->
-				<div>
-					<label for="desiredItems" class="block text-gray-700 mb-1">สิ่งที่อยากแลก</label>
-					<input type="text" id="desiredItems" name="desiredItems"
-						th:value="${item.desiredItems}"
-						placeholder="เช่น หนังสือ, รองเท้า, ของใช้ทั่วไป"
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-				</div>
+				</form>
+			</div>
 
-				<!-- สภาพสิ่งของ -->
-				<div>
-					<label for="itemCondition" class="block text-gray-700 mb-1">สภาพสิ่งของ</label>
-					<select id="itemCondition" name="itemCondition" required
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-						<option value="">-- กรุณาเลือกสภาพ --</option>
-						<option value="ใหม่"
-							th:selected="${item.itemCondition?.name() == 'ใหม่'}">ใหม่</option>
-						<option value="เหมือนใหม่"
-							th:selected="${item.itemCondition?.name() == 'เหมือนใหม่'}">เหมือนใหม่</option>
-						<option value="ใช้งานแล้ว"
-							th:selected="${item.itemCondition?.name() == 'ใช้งานแล้ว'}">ใช้งานแล้ว</option>
-					</select>
-				</div>
+			<!-- Tips Section -->
+			<div
+				class="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg form-section">
+				<h3 class="font-bold text-gray-800 mb-4 flex items-center text-lg">
+					<span class="text-2xl mr-3">💡</span> เคล็ดลับการโพสต์ที่ดี
+				</h3>
+				<ul class="space-y-3 text-gray-700">
+					<li class="tips-card flex items-start"><span
+						class="text-green-500 mr-3 font-bold">✓</span> <span>ถ่ายรูปให้ชัดเจน
+							แสดงมุมมองหลายๆ ด้านของสิ่งของ</span></li>
+					<li class="tips-card flex items-start"><span
+						class="text-green-500 mr-3 font-bold">✓</span> <span>อธิบายรายละเอียดของสิ่งของอย่างละเอียด
+							และตรงไปตรงมา</span></li>
+					<li class="tips-card flex items-start"><span
+						class="text-green-500 mr-3 font-bold">✓</span> <span>ระบุสภาพของสิ่งของอย่างซื่อสัตย์
+							เพื่อสร้างความไว้วางใจ</span></li>
+					<li class="tips-card flex items-start"><span
+						class="text-green-500 mr-3 font-bold">✓</span> <span>บอกสิ่งที่อยากแลกเพื่อให้คนที่สนใจติดต่อได้ตรงจุด</span>
+					</li>
+				</ul>
+			</div>
 
-				<!-- ประเภทสิ่งของ -->
-				<div>
-					<label for="category_id" class="block text-gray-700 mb-1">หมวดหมู่</label>
-					<select id="category_id" name="category.categoryId" required
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-						<option value="">-- กรุณาเลือกหมวดหมู่ --</option>
-						<option th:each="cat : ${categories}" th:value="${cat.categoryId}"
-							th:text="${cat.name}"
-							th:selected="${item.category?.categoryId == cat.categoryId}"></option>
-					</select>
-				</div>
-
-				<!-- ประเภทการลงประกาศ -->
-				<div>
-					<label for="listingType" class="block text-gray-700 mb-1">ประเภทการลงประกาศ</label>
-					<select id="listingType" name="listingType" required
-						class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-						<option value="">-- กรุณาเลือกประเภท --</option>
-						<option value="แลกเปลี่ยน"
-							th:selected="${item.listingType?.name() == 'แลกเปลี่ยน'}">แลกเปลี่ยน</option>
-						<option value="บริจาค"
-							th:selected="${item.listingType?.name() == 'บริจาค'}">บริจาค</option>
-					</select>
-				</div>
-
-				<!-- ปุ่ม Submit -->
-				<button type="submit"
-					class="w-full bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
-					✅ เพิ่มสิ่งของ</button>
-
-			</form>
 		</div>
 	</section>
 

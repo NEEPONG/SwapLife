@@ -45,7 +45,7 @@ body {
 				<div class="hidden md:flex items-center space-x-3">
 					<a th:href="@{/}"
 						class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">🏠
-						หน้าแรก</a> <a th:href="@{/swap}"
+						หน้าแรก</a> <a th:href="@{/items/list}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🔁
 						รายการสิ่งของ</a> <a th:href="@{/items/post}"
 						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
@@ -68,7 +68,7 @@ body {
 
 	<div class="max-w-7xl mx-auto px-6 mt-4">
 		<!-- Header -->
-		<header class="bg-green-600 text-white text-center py-20 rounded-2xl">
+		<header class="bg-gradient-to-r from-green-500 to-green-600 text-white py-12 rounded-2xl text-center">
 			<div class="container mx-auto px-4">
 				<h1 class="text-5xl font-bold mb-4">ของเก่าคุณ =
 					ของใหม่ของใครอีกคน</h1>
@@ -108,7 +108,9 @@ body {
 	<!-- Footer -->
 	<footer class="bg-gray-800 text-white py-8">
 		<div class="container mx-auto text-center">
-			<p>&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="mb-2">&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="text-sm text-gray-400">ให้ของที่ไม่ได้ใช้
+				กลับไปมีคุณค่าอีกครั้ง 🌍</p>
 		</div>
 	</footer>
 
