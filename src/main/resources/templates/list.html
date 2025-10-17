@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="th" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwapLife - รายการสินค้า</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+
+<style>
+body {
+	font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+
+.item-card {
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-card:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+		rgba(0, 0, 0, 0.04);
+}
+
+.badge-swap {
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.badge-donate {
+	background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.filter-btn.active {
+	background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+	color: white;
+}
+
+.category-pill.active {
+	background-color: #10b981;
+	color: white;
+}
+</style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-green-50">
+
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md sticky top-0 z-50">
+		<div class="max-w-7xl mx-auto px-4">
+			<div class="flex justify-between">
+				<div class="flex space-x-7">
+					<div>
+						<a th:href="@{/}" class="flex items-center py-4 px-2"> <span
+							class="font-bold text-gray-700 text-2xl">SwapLife 🌍</span>
+						</a>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center space-x-3">
+					<a th:href="@{/}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">🏠
+						หน้าแรก</a> <a th:href="@{/swap}"
+						class="py-4 px-2 text-green-500 font-semibold border-b-4 border-green-500">📦
+						รายการสินค้า</a> <a th:href="@{/items/post}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">➕
+						โพสต์ของ</a> <a th:href="@{/profile}"
+						class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">👤
+						โปรไฟล์</a>
+				</div>
+				<div class="md:hidden flex items-center">
+					<button class="outline-none mobile-menu-button">
+						<svg class="w-6 h-6 text-gray-500" fill="none"
+							stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Hero Section -->
+	<div class="max-w-7xl mx-auto px-6 mt-4">
+		<section
+			class="bg-gradient-to-r from-green-500 to-green-600 text-white py-12 rounded-2xl">
+			<div class="container mx-auto px-4 text-center">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">ค้นหาสิ่งที่คุณต้องการ
+					🔍</h1>
+				<p class="text-xl mb-8">แลกเปลี่ยนหรือรับบริจาคสิ่งของที่ยังมีคุณค่า</p>
+			</div>
+		</section>
+	</div>
+
+	<!-- Filter and Search Section -->
+	<section class="py-8">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<!-- Search Bar -->
+			<div class="mb-8">
+				<div class="relative max-w-2xl mx-auto">
+					<input type="text" name="search" placeholder="ค้นหาสินค้า..."
+						class="search-input w-full px-6 py-4 rounded-full border-2 border-gray-300 text-lg">
+					<button type="submit"
+						class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full transition duration-300">
+						ค้นหา</button>
+				</div>
+			</div>
+
+			<!-- Filter Section -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+				<!-- ประเภทการแลกเปลี่ยน -->
+				<div class="mb-6">
+					<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+						<span class="mr-2">🔖</span> ประเภทการแลกเปลี่ยน
+					</h3>
+					<div class="flex flex-wrap gap-4">
+						<a href="?type=all"
+							class="filter-btn active px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white border-2 border-green-500 font-semibold transition duration-300 hover:shadow-lg">
+							🌟 ทั้งหมด </a> <a href="?type=swap"
+							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
+							🔄 แลกเปลี่ยน </a> <a href="?type=donate"
+							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
+							🎁 บริจาค </a>
+					</div>
+				</div>
+
+				<!-- หมวดหมู่สินค้า -->
+				<div class="mb-6">
+					<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+						<span class="mr-2">📂</span> หมวดหมู่สินค้า
+					</h3>
+					<div class="flex flex-wrap gap-3">
+						<a href="?category=all"
+							class="category-pill active px-5 py-2 rounded-full bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition duration-300">
+							ทั้งหมด </a> <a href="?category=electronics"
+							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
+							📱 อิเล็กทรอนิกส์ </a> <a href="?category=books"
+							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
+							📚 หนังสือ </a> <a href="?category=fashion"
+							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
+							👕 เสื้อผ้า </a> <a href="?category=home"
+							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
+							🏠 ของใช้ในบ้าน </a> <a href="?category=toys"
+							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
+							🧸 ของเล่น </a>
+					</div>
+				</div>
+
+				<!-- สภาพสิ่งของ -->
+				<div>
+					<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+						<span class="mr-2">⭐</span> สภาพสิ่งของ
+					</h3>
+					<div class="flex flex-wrap gap-4">
+						<a href="?condition=all"
+							class="filter-btn active px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white border-2 border-green-500 font-semibold transition duration-300 hover:shadow-lg">
+							ทั้งหมด </a> <a href="?condition=new"
+							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
+							✨ ใหม่มาก </a> <a href="?condition=good"
+							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
+							👍 สภาพดี </a> <a href="?condition=fair"
+							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
+							🆗 พอใช้ได้ </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Items Grid -->
+	<section class="pb-16">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<div
+				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+				id="itemsGrid">
+
+				<!-- Item Card 1 - Example -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="swap" data-category="electronics">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+							alt="หูฟัง" class="w-full h-48 object-cover"> <span
+							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🔄 แลกเปลี่ยน </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
+							สภาพดี </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">หูฟังบลูทูธ
+							Sony WH-1000XM4</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">หูฟังตัดเสียงรบกวนคุณภาพสูง
+							ใช้งานได้ดี สภาพ 90%</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">📱 อิเล็กทรอนิกส์</span> <span
+								class="text-xs text-gray-500">⏰ 2 ชั่วโมงที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									A</div>
+								<span class="text-sm text-gray-700 font-medium">สมชาย</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Item Card 2 -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="donate" data-category="books">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
+							alt="หนังสือ" class="w-full h-48 object-cover"> <span
+							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🎁 บริจาค </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
+							ใหม่มาก </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">หนังสือนิยายแฮรี่
+							พอตเตอร์ ชุดสมบูรณ์</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">หนังสือเล่มภาษาไทย
+							ครบทุกเล่ม สภาพดีมาก</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">📚 หนังสือ</span> <span
+								class="text-xs text-gray-500">⏰ 5 ชั่วโมงที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									B</div>
+								<span class="text-sm text-gray-700 font-medium">สมหญิง</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Item Card 3 -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="swap" data-category="fashion">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=300&fit=crop"
+							alt="เสื้อผ้า" class="w-full h-48 object-cover"> <span
+							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🔄 แลกเปลี่ยน </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
+							สภาพดี </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">เสื้อแบรนด์เนม
+							Uniqlo</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">เสื้อยืดสีขาว
+							ไซส์ M ใส่ไม่กี่ครั้ง</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">👕 เสื้อผ้า</span> <span
+								class="text-xs text-gray-500">⏰ 1 วันที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									C</div>
+								<span class="text-sm text-gray-700 font-medium">สมศรี</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Item Card 4 -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="donate" data-category="home">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop"
+							alt="โคมไฟ" class="w-full h-48 object-cover"> <span
+							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🎁 บริจาค </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
+							สภาพดีมาก </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">โคมไฟตั้งโต๊ะสไตล์โมเดิร์น</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">โคมไฟอ่านหนังสือ
+							ปรับระดับได้ ใช้งานปกติ</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">🏠 ของใช้ในบ้าน</span> <span
+								class="text-xs text-gray-500">⏰ 3 วันที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									D</div>
+								<span class="text-sm text-gray-700 font-medium">สมพร</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Item Card 5 -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="swap" data-category="toys">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=300&fit=crop"
+							alt="ของเล่น" class="w-full h-48 object-cover"> <span
+							class="badge-swap absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🔄 แลกเปลี่ยน </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-green-600 text-xs font-bold rounded-full">
+							สภาพดี </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">ตุ๊กตา
+							Teddy Bear ขนาดใหญ่</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">ตุ๊กตาหมีขนนุ่ม
+							สูง 60 ซม. สะอาดดี</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">🧸 ของเล่น</span> <span
+								class="text-xs text-gray-500">⏰ 1 สัปดาห์ที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									E</div>
+								<span class="text-sm text-gray-700 font-medium">สมใจ</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Item Card 6 -->
+				<div
+					class="item-card bg-white rounded-2xl shadow-lg overflow-hidden"
+					data-type="donate" data-category="electronics">
+					<div class="relative">
+						<img
+							src="https://images.unsplash.com/photo-1585298723682-7115561c51b7?w=400&h=300&fit=crop"
+							alt="คีย์บอร์ด" class="w-full h-48 object-cover"> <span
+							class="badge-donate absolute top-3 right-3 px-3 py-1 text-white text-xs font-bold rounded-full">
+							🎁 บริจาค </span> <span
+							class="absolute top-3 left-3 bg-white px-3 py-1 text-blue-600 text-xs font-bold rounded-full">
+							พร้อมใช้งาน </span>
+					</div>
+					<div class="p-5">
+						<h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">คีย์บอร์ดเกมมิ่ง
+							RGB</h3>
+						<p class="text-gray-600 text-sm mb-3 line-clamp-2">คีย์บอร์ดมีไฟ
+							RGB ใช้งานได้ดี</p>
+						<div class="flex items-center justify-between mb-3">
+							<span class="text-xs text-gray-500">📱 อิเล็กทรอนิกส์</span> <span
+								class="text-xs text-gray-500">⏰ 2 วันที่แล้ว</span>
+						</div>
+						<div class="border-t pt-3 flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+								<div
+									class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+									F</div>
+								<span class="text-sm text-gray-700 font-medium">สมหมาย</span>
+							</div>
+							<button
+								class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300">
+								ดูรายละเอียด</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 text-white py-8">
+		<div class="container mx-auto text-center">
+			<p class="mb-2">&copy; 2025 SwapLife. All Rights Reserved.</p>
+			<p class="text-sm text-gray-400">ให้ของที่ไม่ได้ใช้
+				กลับไปมีคุณค่าอีกครั้ง 🌍</p>
+		</div>
+	</footer>
+
+</body>
+</html>

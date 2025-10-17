@@ -41,4 +41,9 @@ public class PageController {
 	        model.addAttribute("user", user);
 	        return "profile";
 	    }
+	    
+	    @GetMapping("/swap")
+	    public String showListPage(Model model) {
+	        return "list"; // ✅ ชื่อไฟล์ HTML ที่จะไป render
+	    }
 }
