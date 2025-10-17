@@ -225,11 +225,20 @@ public class ItemController {
     }
 	
 	@GetMapping("/{id}")
-	public String getItemDetail(@PathVariable("id") Integer id, Model model) {
+	public String showItemDetail(@PathVariable Integer id, Authentication authentication, Model model) {
 	    Item item = itemService.getItemById(id);
 	    model.addAttribute("item", item);
+
+	    boolean isOwner = false;
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String username = authentication.getName();
+	        if (item.getUser() != null && item.getUser().getUsername().equals(username)) {
+	            isOwner = true;
+	        }
+	    }
+
+	    model.addAttribute("isOwner", isOwner);
 	    return "item-details";
 	}
-
 
 }

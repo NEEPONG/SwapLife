@@ -138,13 +138,25 @@ body {
 
 						<!-- 🔹 ปุ่มการทำงาน -->
 						<div class="flex gap-4">
-							<a th:if="${item.listingType == 'แลกเปลี่ยน'}"
+							<!-- 🔄 ปุ่มขอแลกเปลี่ยน -->
+							<a
+								th:if="${item.listingType.name() == 'แลกเปลี่ยน' and !isOwner}"
 								th:href="@{/swap/offer(itemId=${item.itemId})}"
 								class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
-								🔄 ขอแลกเปลี่ยน </a> <a th:if="${item.listingType == 'บริจาค'}"
+								🔄 ขอแลกเปลี่ยน </a>
+
+							<!-- 🎁 ปุ่มขอรับบริจาค -->
+							<a th:if="${item.listingType.name() == 'บริจาค' and !isOwner}"
 								th:href="@{/donate/request(itemId=${item.itemId})}"
 								class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
-								🎁 ขอรับบริจาค </a> <a th:href="@{/swap}"
+								🎁 ขอรับบริจาค </a>
+
+							<!-- 🔒 ปุ่มถูกซ่อนเพราะเป็นเจ้าของ -->
+							<div th:if="${isOwner}"
+								class="bg-gray-100 text-gray-500 border border-gray-300 rounded-lg px-6 py-3 font-medium inline-block">
+								🔒 คุณเป็นเจ้าของสินค้านี้</div>
+
+							<a th:href="@{/items/list}"
 								class="border border-gray-400 text-gray-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition duration-300">
 								⬅ กลับไปหน้ารายการ </a>
 						</div>
