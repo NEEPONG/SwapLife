@@ -44,11 +44,4 @@ public class PageController {
 	        model.addAttribute("user", user);
 	        return "profile";
 	    }
-	    
-	    @GetMapping("/swap")
-	    public String showListPage(Model model) {
-	        // ดึงรายการสินค้าจากฐานข้อมูล
-	        model.addAttribute("items", itemService.getAllItems());
-	        return "list"; // ✅ ชื่อไฟล์ HTML ที่จะไป render
-	    }
 }

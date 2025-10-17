@@ -104,19 +104,19 @@ public class ItemService {
 		}
 	}
 
-	// New: ดึงรายการ Item ทั้งหมดจากฐานข้อมูล และ initialize ความสัมพันธ์ที่เป็น LAZY
-	@Transactional(readOnly = true)
-	public List<Item> getAllItems() {
-		List<Item> items = itemRepository.findAll();
-		// บังคับให้ JPA โหลดความสัมพันธ์ LAZY ก่อนส่งกลับไปยัง view
-		items.forEach(i -> {
-			if (i.getImages() != null)
-				i.getImages().size();
-			if (i.getUser() != null)
-				i.getUser().getUsername();
-			if (i.getCategory() != null)
-				i.getCategory().getName();
-		});
-		return items;
-	}
+	// ✅ แสดงทั้งหมด
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
+    }
+
+    public List<Item> searchAndFilter(String keyword, String type, String category, String condition) {
+        keyword = (keyword == null) ? "" : keyword.trim().toLowerCase();
+
+        // ถ้าทั้งหมดเป็นค่าเริ่มต้น แสดงทั้งหมดเลย
+        if (keyword.isEmpty() && type.equals("all") && category.equals("all") && condition.equals("all")) {
+            return itemRepository.findAll();
+        }
+
+        return itemRepository.searchAndFilter(keyword, type, category, condition);
+    }
 }

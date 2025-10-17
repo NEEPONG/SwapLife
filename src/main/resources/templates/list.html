@@ -47,7 +47,16 @@ body {
 }
 </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <body class="bg-gradient-to-br from-gray-50 to-green-50">
+
+	<!-- ฟอร์มกลางที่ใช้ส่งค่า search + filter -->
+	<form id="filterForm" th:action="@{/items/list}" method="get">
+		<input type="hidden" name="q" th:value="${keyword}"> <input
+			type="hidden" name="type" th:value="${selectedType}"> <input
+			type="hidden" name="category" th:value="${selectedCategory}">
+		<input type="hidden" name="condition" th:value="${selectedCondition}">
+	</form>
 
 	<!-- Navbar -->
 	<nav class="bg-white shadow-md sticky top-0 z-50">
@@ -100,53 +109,55 @@ body {
 	<section class="py-8">
 		<div class="container mx-auto px-4 max-w-7xl">
 			<!-- Search Bar -->
-			<div class="mb-8">
-				<div class="relative max-w-2xl mx-auto">
-					<input type="text" name="search" placeholder="ค้นหาสินค้า..."
-						class="search-input w-full px-6 py-4 rounded-full border-2 border-gray-300 text-lg">
+			<div class="mb-8 mt-6">
+				<form th:action="@{/items/list}" method="get" id="searchForm"
+					class="relative max-w-2xl mx-auto flex items-center">
+					<input type="text" name="q" th:value="${keyword}"
+						placeholder="🔍 ค้นหาสินค้า เช่น เสื้อผ้า หนังสือ ของใช้..."
+						class="w-full px-6 py-4 rounded-full border-2 border-gray-300 text-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none transition duration-200">
 					<button type="submit"
-						class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full transition duration-300">
+						class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
 						ค้นหา</button>
-				</div>
+				</form>
 			</div>
 
 			<!-- Filter Section -->
 			<div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+
 				<!-- ประเภทการแลกเปลี่ยน -->
 				<div class="mb-6">
 					<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
 						<span class="mr-2">🔖</span> ประเภทการแลกเปลี่ยน
 					</h3>
 					<div class="flex flex-wrap gap-4">
-						<a href="?type=all"
-							class="filter-btn active px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white border-2 border-green-500 font-semibold transition duration-300 hover:shadow-lg">
-							🌟 ทั้งหมด </a> <a href="?type=swap"
-							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
-							🔄 แลกเปลี่ยน </a> <a href="?type=donate"
-							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
-							🎁 บริจาค </a>
+						<a href="#"
+							class="filter-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedType == 'all'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-type="all">🌟 ทั้งหมด</a> <a href="#"
+							class="filter-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedType == 'swap'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-type="swap">🔄 แลกเปลี่ยน</a> <a href="#"
+							class="filter-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedType == 'donate'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-type="donate">🎁 บริจาค</a>
 					</div>
 				</div>
 
-				<!-- หมวดหมู่สินค้า -->
+				<!-- หมวดหมู่ -->
 				<div class="mb-6">
 					<h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
 						<span class="mr-2">📂</span> หมวดหมู่สินค้า
 					</h3>
 					<div class="flex flex-wrap gap-3">
-						<a href="?category=all"
-							class="category-pill active px-5 py-2 rounded-full bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition duration-300">
-							ทั้งหมด </a> <a href="?category=electronics"
-							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
-							📱 อิเล็กทรอนิกส์ </a> <a href="?category=books"
-							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
-							📚 หนังสือ </a> <a href="?category=fashion"
-							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
-							👕 เสื้อผ้า </a> <a href="?category=home"
-							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
-							🏠 ของใช้ในบ้าน </a> <a href="?category=toys"
-							class="category-pill px-5 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-green-500 hover:text-white transition duration-300">
-							🧸 ของเล่น </a>
+						<a href="#"
+							class="category-pill px-5 py-2 rounded-full text-sm font-medium transition duration-300"
+							th:classappend="${selectedCategory == 'all'} ? ' bg-green-500 text-white' : ' bg-gray-200 text-gray-700'"
+							data-category="all">ทั้งหมด</a> <a href="#"
+							th:each="cat : ${categories}"
+							class="category-pill px-5 py-2 rounded-full text-sm font-medium transition duration-300"
+							th:text="${cat.name}" th:data-category="${cat.name}"
+							th:classappend="${selectedCategory == cat.name.toLowerCase()} ? ' bg-green-500 text-white' : ' bg-gray-200 text-gray-700'">
+						</a>
 					</div>
 				</div>
 
@@ -156,15 +167,19 @@ body {
 						<span class="mr-2">⭐</span> สภาพสิ่งของ
 					</h3>
 					<div class="flex flex-wrap gap-4">
-						<a href="?condition=all"
-							class="filter-btn active px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white border-2 border-green-500 font-semibold transition duration-300 hover:shadow-lg">
-							ทั้งหมด </a> <a href="?condition=new"
-							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
-							✨ ใหม่มาก </a> <a href="?condition=good"
-							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
-							👍 สภาพดี </a> <a href="?condition=fair"
-							class="filter-btn px-6 py-3 rounded-full bg-white border-2 border-gray-300 font-semibold transition duration-300 hover:border-green-500">
-							🆗 พอใช้ได้ </a>
+						<a href="#"
+							class="condition-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedCondition == 'all'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-condition="all">ทั้งหมด</a> <a href="#"
+							class="condition-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedCondition == 'new'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-condition="new">✨ ใหม่มาก</a> <a href="#"
+							class="condition-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedCondition == 'good'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-condition="good">👍 สภาพดี</a> <a href="#"
+							class="condition-btn px-6 py-3 rounded-full font-semibold border transition duration-300"
+							th:classappend="${selectedCondition == 'fair'} ? ' bg-green-500 text-white border-green-500' : ' bg-white text-gray-700 border-gray-300'"
+							data-condition="fair">🆗 พอใช้ได้</a>
 					</div>
 				</div>
 			</div>
@@ -216,7 +231,8 @@ body {
 							<div class="flex items-center space-x-2">
 								<div
 									class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm"
-									th:text="${item.user.firstName.substring(0,1).toUpperCase()}">First Char of Name</div>
+									th:text="${item.user.firstName.substring(0,1).toUpperCase()}">First
+									Char of Name</div>
 								<span class="text-sm text-gray-700 font-medium"
 									th:text="${item.user.firstName != null && item.user.firstName != '' ? item.user.firstName : item.user.username}">User</span>
 							</div>
@@ -240,4 +256,5 @@ body {
 	</footer>
 
 </body>
+<script th:src="@{/assets/js/list.js}"></script>
 </html>

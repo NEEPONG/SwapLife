@@ -163,4 +163,25 @@ public class ItemController {
 			return "post";
 		}
 	}
+	
+	@GetMapping("/list")
+	public String listItems(
+	        @RequestParam(value = "q", required = false) String keyword,
+	        @RequestParam(value = "type", required = false, defaultValue = "all") String type,
+	        @RequestParam(value = "category", required = false, defaultValue = "all") String category,
+	        @RequestParam(value = "condition", required = false, defaultValue = "all") String condition,
+	        Model model) {
+
+	    List<Item> items = itemService.searchAndFilter(keyword, type, category, condition);
+
+	    model.addAttribute("items", items);
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("selectedType", type);
+	    model.addAttribute("selectedCategory", category);
+	    model.addAttribute("selectedCondition", condition);
+	    model.addAttribute("categories", categoryService.getAllCategories());
+
+	    return "list";
+	}
+
 }

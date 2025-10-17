@@ -16,7 +16,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // ปิด CSRF สำหรับการทดสอบ (เปิดภายหลังได้)
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/uploads/**", "/assets/**", "/css/**", "/js/**", "/images/**").permitAll()
-            	.requestMatchers("/", "swap","/login", "/register", "/about", "/contact").permitAll()
+            	.requestMatchers("/", "swap","/login", "/register", "/about", "/contact", "/items/list").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
