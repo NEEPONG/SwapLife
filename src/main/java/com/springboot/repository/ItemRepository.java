@@ -21,7 +21,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 		    SELECT i FROM Item i
 		    JOIN i.category c
 		    WHERE
-		        i.status = com.springboot.model.enums.ItemStatus.ว่าง
+		        i.status = :availableStatus
 
 		        AND (:keyword = '' OR LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
 		         OR LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
@@ -50,7 +50,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 		    @Param("keyword") String keyword,
 		    @Param("type") String type,
 		    @Param("category") String category,
-		    @Param("condition") String condition
+		    @Param("condition") String condition,
+		    @Param("availableStatus") ItemStatus availableStatus
 		);
 	
 	List<Item> findByUserOrderByCreatedAtDesc(User user);
