@@ -61,5 +61,6 @@ public class OfferController {
 
 	    return "redirect:/items/" + targetItemId + "?success=offerSent";
 	}
+	
 }
 

@@ -26,6 +26,10 @@ public class SwapOfferService {
   public List<SwapOffer> getRequestsForUser(User user) {
     return swapOfferRepository.findRequestsForUser(user);
   }
+  
+  public List<SwapOffer> getOffersByRequester(User user) {
+	    return swapOfferRepository.findByRequester(user);
+	}
 
   @Transactional
   public void createOffer(
@@ -87,4 +91,6 @@ public class SwapOfferService {
       "✅ [SUCCESS] Item " + targetItem.getItemId() + " status updated to: มีคำร้องขอ"
     );
   }
+  
 }
+

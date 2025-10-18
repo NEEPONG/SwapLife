@@ -200,11 +200,17 @@ public class ItemController {
         List<Item> items;
         
         if ("requested".equals(status)) {
-            List<SwapOffer> offers = swapOfferService.getRequestsForUser(user);
-            model.addAttribute("offers", offers);
-            model.addAttribute("status", "requested");
+            // ✅ ฝั่งที่ “คนอื่นขอมาหาฉัน”
+            List<SwapOffer> receivedOffers = swapOfferService.getRequestsForUser(user);
+
+            // ✅ ฝั่งที่ “ฉันเป็นคนไปขอเขา”
+            List<SwapOffer> sentOffers = swapOfferService.getOffersByRequester(user);
+
+            model.addAttribute("receivedOffers", receivedOffers);
+            model.addAttribute("sentOffers", sentOffers);
             model.addAttribute("user", user);
-            return "profile-items-offer"; // ✅ ไปยังหน้าใหม่
+            model.addAttribute("status", "requested");
+            return "profile-items-offer";
         }
 
         if (status == null || status.isEmpty() || status.equals("all")) {

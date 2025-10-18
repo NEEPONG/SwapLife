@@ -23,4 +23,7 @@ public interface SwapOfferRepository extends JpaRepository<SwapOffer, Integer> {
 	        WHERE ri.user = :user
 	    """)
 	    List<SwapOffer> findRequestsForUser(@Param("user") User user);
+	
+	List<SwapOffer> findByRequester(User requester);
+
 }
