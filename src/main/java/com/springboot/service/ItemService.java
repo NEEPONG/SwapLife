@@ -120,7 +120,7 @@ public class ItemService {
             return itemRepository.findAll();
         }
 
-        return itemRepository.searchAndFilter(keyword, type, category, condition);
+        return itemRepository.searchFilteredItems(keyword, type, category, condition);
     }
     
     public List<Item> findItemsByUser(User user) {
