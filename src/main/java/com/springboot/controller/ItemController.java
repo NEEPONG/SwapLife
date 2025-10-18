@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,9 @@ public class ItemController {
 	
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private SwapOfferService swapOfferService;
 	
 	@GetMapping("/post")
 	public String showPostItemPage(Model model) {
@@ -182,6 +186,59 @@ public class ItemController {
 	    model.addAttribute("categories", categoryService.getAllCategories());
 
 	    return "list";
+	}
+	
+	@GetMapping("/mine")
+    public String viewMyItems(
+            @RequestParam(value = "status", required = false) String status,
+            Authentication authentication,
+            Model model) {
+
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        List<Item> items;
+        
+        if ("requested".equals(status)) {
+            List<SwapOffer> offers = swapOfferService.getRequestsForUser(user);
+            model.addAttribute("offers", offers);
+            model.addAttribute("status", "requested");
+            model.addAttribute("user", user);
+            return "profile-items-offer"; // ✅ ไปยังหน้าใหม่
+        }
+
+        if (status == null || status.isEmpty() || status.equals("all")) {
+            items = itemService.findItemsByUser(user);
+        } else if (status.equals("available")) {
+            items = itemService.getAvailableItems(user);
+        } else if (status.equals("swapped")) {
+            items = itemService.getSwappedItems(user);
+        } else {
+            items = itemService.findItemsByUser(user); // fallback
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("items", items);
+        model.addAttribute("status", status);
+
+        return "profile-items";
+    }
+	
+	@GetMapping("/{id}")
+	public String showItemDetail(@PathVariable Integer id, Authentication authentication, Model model) {
+	    Item item = itemService.getItemById(id);
+	    model.addAttribute("item", item);
+
+	    boolean isOwner = false;
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String username = authentication.getName();
+	        if (item.getUser() != null && item.getUser().getUsername().equals(username)) {
+	            isOwner = true;
+	        }
+	    }
+
+	    model.addAttribute("isOwner", isOwner);
+	    return "item-details";
 	}
 
 }

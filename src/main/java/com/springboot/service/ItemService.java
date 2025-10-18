@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.model.Item;
 import com.springboot.model.ItemImage;
+import com.springboot.model.User;
+import com.springboot.model.enums.ItemStatus;
 import com.springboot.repository.ItemRepository;
 
 @Service
@@ -118,5 +121,31 @@ public class ItemService {
         }
 
         return itemRepository.searchAndFilter(keyword, type, category, condition);
+    }
+    
+    public List<Item> findItemsByUser(User user) {
+        return itemRepository.findByUserOrderByCreatedAtDesc(user);
+    }
+    
+    // ✅ ดึงเฉพาะของที่ "ว่าง"
+    public List<Item> getAvailableItems(User user) {
+        return itemRepository.findByUserAndStatusOrderByCreatedAtDesc(user, ItemStatus.ว่าง);
+    }
+
+    // ✅ ดึงเฉพาะของที่ "แลกแล้ว"
+    public List<Item> getSwappedItems(User user) {
+        return itemRepository.findByUserAndStatusOrderByCreatedAtDesc(user, ItemStatus.แลกแล้ว);
+    }
+    
+    @Transactional(readOnly = true)
+    public Item getItemById(Integer id) {
+        Optional<Item> itemOpt = itemRepository.findById(id);
+        if (itemOpt.isEmpty()) {
+            throw new RuntimeException("ไม่พบข้อมูลสินค้า ID: " + id);
+        }
+
+        Item item = itemOpt.get();
+
+        return item;
     }
 }

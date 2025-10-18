@@ -3,31 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SwapLife - โปรไฟล์ของฉัน</title>
+<title>ของที่ฉันโพสต์ | SwapLife</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
 	rel="stylesheet">
-
-<link
-	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
-	rel="stylesheet">
-<link rel="icon" type="image/png"
-	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
-<link rel="icon" type="image/svg+xml"
-	th:href="@{/assets/images/favicon/favicon.svg}">
-<link rel="shortcut icon"
-	th:href="@{/assets/images/favicon/favicon.ico}">
-<link rel="apple-touch-icon" sizes="180x180"
-	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
-<link rel="manifest"
-	th:href="@{/assets/images/favicon/site.webmanifest}">
-
 <style>
 body {
 	font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+
+.active-tab {
+	border-bottom: 2px solid #22c55e;
+	color: #16a34a;
+	font-weight: 600;
 }
 </style>
 </head>
@@ -70,18 +59,19 @@ body {
 		</div>
 	</nav>
 
-	<!-- Content -->
+	<!-- 🔹 Content -->
 	<main class="flex-grow">
 		<div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-12 gap-6">
+
 			<!-- Sidebar -->
 			<aside class="col-span-12 md:col-span-3">
 				<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 					<div class="p-5 flex items-center gap-3 border-b">
 						<div
-							class="w-14 h-14 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
+							class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
 							<img th:if="${user.profilePictureUrl}"
 								th:src="${user.profilePictureUrl}"
-								class="w-full h-full object-cover" alt=""> <span
+								class="w-full h-full object-cover"> <span
 								th:if="${user.profilePictureUrl == null}"
 								class="text-2xl text-gray-400">👤</span>
 						</div>
@@ -93,12 +83,11 @@ body {
 								แก้ไขข้อมูลส่วนตัว</a>
 						</div>
 					</div>
-
 					<nav class="p-3 text-sm">
 						<a th:href="@{/profile}"
-							class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium"><span>👤</span>
+							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👤</span>
 							บัญชีของฉัน</a> <a th:href="@{/items/mine}"
-							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>📦</span>
+							class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium"><span>📦</span>
 							ของที่ฉันโพสต์</a> <a th:href="@{/notifications}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🔔</span>
 							การแจ้งเตือน</a>
@@ -106,27 +95,66 @@ body {
 				</div>
 			</aside>
 
-			<!-- Main Content -->
+			<!-- 🔹 Main Content -->
 			<section class="col-span-12 md:col-span-9">
 				<div class="bg-white rounded-2xl shadow-lg">
-					<div class="px-6 pt-4">
-						<div class="flex gap-6 text-sm border-b">
-							<button
-								class="py-3 -mb-px border-b-2 border-green-500 text-green-600 font-semibold">ทั้งหมด</button>
-							<button
-								class="py-3 text-gray-600 hover:text-green-600 transition">รอคำร้องขอ</button>
-							<button
-								class="py-3 text-gray-600 hover:text-green-600 transition">คำร้องขอ</button>
-							<button
-								class="py-3 text-gray-600 hover:text-green-600 transition">แลกเปลี่ยนสำเร็จ</button>
-						</div>
+
+					<!-- Tabs -->
+					<div class="px-6 pt-4 border-b flex gap-6 text-sm">
+						<a th:href="@{/items/mine(status='all')}"
+							th:classappend="${status == 'all' or status == null} ? 'active-tab' : ''"
+							class="py-3 text-gray-600 hover:text-green-600">ทั้งหมด</a> <a
+							th:href="@{/items/mine(status='available')}"
+							th:classappend="${status == 'available'} ? 'active-tab' : ''"
+							class="py-3 text-gray-600 hover:text-green-600">รอคำร้องขอ</a> 
+							<a th:href="@{/items/mine(status='swapped')}"
+							th:classappend="${status == 'swapped'} ? 'active-tab' : ''"
+							class="py-3 text-gray-600 hover:text-green-600">แลกเปลี่ยนสำเร็จ</a>
+							<a th:href="@{/items/mine(status='requested')}"
+							th:classappend="${status == 'requested'} ? 'active-tab' : ''"
+							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a>
 					</div>
 
-					<div
-						class="p-10 flex flex-col items-center justify-center text-center text-gray-500">
-						<img src="https://cdn-icons-png.flaticon.com/512/7486/7486749.png"
-							alt="" class="w-28 h-28 opacity-80 mb-4">
-						<div class="text-base">ยังไม่มีกิจกรรม</div>
+					<!-- Item List -->
+					<div class="p-6 space-y-4">
+
+						<div th:if="${#lists.isEmpty(items)}"
+							class="flex flex-col items-center justify-center text-gray-500 py-10">
+							<img src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+								alt="" class="w-20 h-20 mb-3 opacity-70">
+							<div>ยังไม่มีข้อมูลสิ่งของ</div>
+						</div>
+
+						<!-- 🔹 แสดงแต่ละรายการแบบแถว -->
+						<div th:each="item : ${items}"
+							class="bg-gray-50 rounded-xl border shadow-sm hover:shadow-md transition flex items-center p-4 justify-between">
+
+							<!-- ซ้าย: รูปสินค้า -->
+							<div class="flex items-center gap-4">
+								<img th:src="${item.images[0]?.imageUrl}" alt="item"
+									class="w-24 h-24 object-cover rounded-lg border">
+								<div>
+									<h3 class="font-bold text-lg text-gray-800"
+										th:text="${item.title}">ชื่อสินค้า</h3>
+									<p class="text-sm text-gray-600"
+										th:text="'สภาพ: ' + ${item.itemCondition}"></p>
+									<p class="text-sm text-gray-600"
+										th:text="'หมวดหมู่: ' + ${item.category.name}"></p>
+									<p class="text-xs text-gray-400 mt-1"
+										th:text="${item.createdAt != null ? 'โพสต์เมื่อ ' + item.createdAt.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}"></p>
+								</div>
+							</div>
+
+							<!-- ขวา: ปุ่ม + สถานะ -->
+							<div class="flex flex-col items-end gap-2">
+								<span th:text="${item.status}"
+									class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-medium"></span>
+								<a th:href="@{/items/{id}(id=${item.itemId})}"
+									class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
+									ดูรายละเอียด </a>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</section>
