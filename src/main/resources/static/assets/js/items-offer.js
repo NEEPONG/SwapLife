@@ -76,3 +76,44 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+function confirmCancelOffer(event, form) {
+  event.preventDefault();
+  Swal.fire({
+    title: "ยืนยันการยกเลิก?",
+    text: "คุณแน่ใจหรือไม่ที่จะยกเลิกคำร้องนี้",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "ยืนยัน",
+    cancelButtonText: "ยกเลิก"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit();
+    }
+  });
+  return false;
+}
+
+// ✅ แสดง SweetAlert หลังส่งคำร้องสำเร็จ
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const successType = urlParams.get("success");
+
+  if (successType === "offerSent") {
+    Swal.fire({
+      title: "🎉 ส่งคำร้องสำเร็จ!",
+      text: "คำร้องขอของคุณได้ถูกส่งไปยังผู้ใช้เรียบร้อยแล้ว",
+      icon: "success",
+      confirmButtonColor: "#10b981",
+      confirmButtonText: "ตกลง",
+    });
+  }
+});
+
+if (window.history.replaceState) {
+  const url = new URL(window.location);
+  url.searchParams.delete("success");
+  window.history.replaceState({}, document.title, url.pathname + url.search);
+}

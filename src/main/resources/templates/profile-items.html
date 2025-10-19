@@ -88,8 +88,7 @@ body {
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👤</span>
 							บัญชีของฉัน</a> <a th:href="@{/items/mine}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium"><span>📦</span>
-							ของที่ฉันโพสต์</a>
-							<a th:href="@{/logout}"
+							ของที่ฉันโพสต์</a> <a th:href="@{/logout}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👋</span>
 							ออกจากระบบ</a>
 					</nav>
@@ -113,7 +112,11 @@ body {
 							class="py-3 text-gray-600 hover:text-green-600">แลกเปลี่ยนสำเร็จ</a>
 						<a th:href="@{/items/mine(status='requested')}"
 							th:classappend="${status == 'requested'} ? 'active-tab' : ''"
-							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a>
+							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a> <a
+							th:href="@{/offers/history}"
+							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
+							<span></span> ประวัติคำร้องขอ
+						</a>
 					</div>
 
 					<!-- Item List -->

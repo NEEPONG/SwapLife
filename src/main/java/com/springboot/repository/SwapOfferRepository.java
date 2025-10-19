@@ -2,6 +2,7 @@ package com.springboot.repository;
 
 import com.springboot.model.SwapOffer;
 import com.springboot.model.User;
+import com.springboot.model.enums.OfferStatus;
 
 import java.util.List;
 
@@ -17,13 +18,23 @@ public interface SwapOfferRepository extends JpaRepository<SwapOffer, Integer> {
     // User findByUsername(String username);
 	
 	@Query("""
-	        SELECT so FROM SwapOffer so
-	        JOIN FETCH so.requestedItem ri
-	        JOIN FETCH so.offeredItem oi
-	        WHERE ri.user = :user
-	    """)
-	    List<SwapOffer> findRequestsForUser(@Param("user") User user);
+		    SELECT so FROM SwapOffer so
+		    JOIN FETCH so.requestedItem ri
+		    JOIN FETCH so.offeredItem oi
+		    WHERE ri.user = :user
+		      AND so.status = com.springboot.model.enums.OfferStatus.รอดำเนินการ
+		""")
+		List<SwapOffer> findRequestsForUser(@Param("user") User user);
 	
-	List<SwapOffer> findByRequester(User requester);
+	@Query("""
+		    SELECT so FROM SwapOffer so
+		    JOIN FETCH so.requestedItem ri
+		    JOIN FETCH so.offeredItem oi
+		    WHERE so.requester = :requester
+		      AND so.status = com.springboot.model.enums.OfferStatus.รอดำเนินการ
+		""")
+		List<SwapOffer> findByRequester(@Param("requester") User requester);
+	
+	List<SwapOffer> findByRequesterAndStatusNot(User requester, OfferStatus status);
 
 }

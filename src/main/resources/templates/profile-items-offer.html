@@ -39,8 +39,10 @@ body {
 
 @keyframes pulse { 0%, 100% {
 	transform: scale(1);
-}
-50%{transform:
+}50%
+{
+transform
+:
 scale(
 1.1
 );
@@ -110,8 +112,7 @@ scale(
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👤</span>
 							บัญชีของฉัน</a> <a th:href="@{/items/mine}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium"><span>📦</span>
-							ของที่ฉันโพสต์</a> 
-							<a th:href="@{/logout}"
+							ของที่ฉันโพสต์</a> <a th:href="@{/logout}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👋</span>
 							ออกจากระบบ</a>
 					</nav>
@@ -135,7 +136,11 @@ scale(
 							class="py-3 text-gray-600 hover:text-green-600">แลกเปลี่ยนสำเร็จ</a>
 						<a th:href="@{/items/mine(status='requested')}"
 							th:classappend="${status == 'requested'} ? 'active-tab' : ''"
-							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a>
+							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a> <a
+							th:href="@{/offers/history}"
+							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
+							<span></span> ประวัติคำร้องขอ
+						</a>
 					</div>
 
 					<!-- Sub Tabs -->
@@ -307,14 +312,6 @@ scale(
 											</p>
 										</div>
 									</div>
-									<span th:switch="${offer.status}"
-										class="px-3 py-1 rounded-full text-xs font-semibold"> <span
-										th:case="'รอดำเนินการ'" class="bg-yellow-100 text-yellow-700">⏳
-											รอดำเนินการ</span> <span th:case="'ยอมรับ'"
-										class="bg-green-100 text-green-700">✅ แลกเปลี่ยนสำเร็จ</span>
-										<span th:case="'ปฏิเสธ'" class="bg-red-100 text-red-700">❌
-											ถูกปฏิเสธ</span>
-									</span>
 								</div>
 
 								<div class="flex flex-col lg:flex-row items-center gap-6">
@@ -374,6 +371,20 @@ scale(
 												</div>
 											</div>
 										</div>
+									</div>
+									<!-- ปุ่มจัดการ -->
+									<div
+										class="flex justify-end mt-5 pt-4 border-t border-gray-200"
+										th:if="${offer.status.name() == 'รอดำเนินการ'}">
+
+										<form th:action="@{/swap/cancel}" method="post"
+											onsubmit="return confirmCancelOffer(event, this)">
+											<input type="hidden" name="offerId"
+												th:value="${offer.offerId}">
+											<button type="submit"
+												class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition">
+												❌ ยกเลิกคำร้องขอ</button>
+										</form>
 									</div>
 								</div>
 							</div>
