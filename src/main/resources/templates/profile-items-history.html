@@ -140,7 +140,6 @@ scale
 					<!-- Tabs -->
 					<div class="px-6 pt-4 border-b flex gap-6 text-sm">
 						<a th:href="@{/items/mine(status='all')}"
-							th:classappend="${status == 'all' or status == null} ? 'active-tab' : ''"
 							class="py-3 text-gray-600 hover:text-green-600">ทั้งหมด</a> <a
 							th:href="@{/items/mine(status='available')}"
 							th:classappend="${status == 'available'} ? 'active-tab' : ''"

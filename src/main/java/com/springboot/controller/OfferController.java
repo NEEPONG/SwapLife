@@ -59,7 +59,8 @@ public class OfferController {
 
 	    swapOfferService.createOffer(user, offeredItemId, targetItemId, message);
 
-	    return "redirect:/items/" + targetItemId + "?success=offerSent";
+	    // ✅ หลังส่งคำร้องสำเร็จ → ไปหน้า "คำร้องขอของฉัน"
+	    return "redirect:/items/mine?status=requested";
 	}
 	
 	@PostMapping("/swap/accept")

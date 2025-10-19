@@ -95,3 +95,25 @@ function confirmCancelOffer(event, form) {
   });
   return false;
 }
+
+// ✅ แสดง SweetAlert หลังส่งคำร้องสำเร็จ
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const successType = urlParams.get("success");
+
+  if (successType === "offerSent") {
+    Swal.fire({
+      title: "🎉 ส่งคำร้องสำเร็จ!",
+      text: "คำร้องขอของคุณได้ถูกส่งไปยังผู้ใช้เรียบร้อยแล้ว",
+      icon: "success",
+      confirmButtonColor: "#10b981",
+      confirmButtonText: "ตกลง",
+    });
+  }
+});
+
+if (window.history.replaceState) {
+  const url = new URL(window.location);
+  url.searchParams.delete("success");
+  window.history.replaceState({}, document.title, url.pathname + url.search);
+}
