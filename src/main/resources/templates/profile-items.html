@@ -8,6 +8,21 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
 	rel="stylesheet">
+	
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap"
+	rel="stylesheet">
+<link rel="icon" type="image/png"
+	th:href="@{/assets/images/favicon/favicon-96x96.png}" sizes="96x96">
+<link rel="icon" type="image/svg+xml"
+	th:href="@{/assets/images/favicon/favicon.svg}">
+<link rel="shortcut icon"
+	th:href="@{/assets/images/favicon/favicon.ico}">
+<link rel="apple-touch-icon" sizes="180x180"
+	th:href="@{/assets/images/favicon/apple-touch-icon.png}">
+<link rel="manifest"
+	th:href="@{/assets/images/favicon/site.webmanifest}">
+
 <style>
 body {
 	font-family: 'IBM Plex Sans Thai', sans-serif;
@@ -20,6 +35,12 @@ body {
 }
 </style>
 </head>
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- JS หลักของหน้า -->
+<script th:src="@{/assets/js/items.js}"></script>
 
 <body
 	class="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
@@ -130,6 +151,7 @@ body {
 						</div>
 
 						<!-- 🔹 แสดงแต่ละรายการแบบแถว -->
+						<span th:if="${successMessage}" th:attr="data-success-msg=${successMessage}" hidden></span>
 						<div th:each="item : ${items}"
 							class="bg-gray-50 rounded-xl border shadow-sm hover:shadow-md transition flex items-center p-4 justify-between">
 
@@ -151,14 +173,36 @@ body {
 
 							<!-- ขวา: ปุ่ม + สถานะ -->
 							<div class="flex flex-col items-end gap-2">
+
+								<!-- 🔹 แสดงสถานะ -->
 								<span th:text="${item.status}"
 									th:classappend="${item.status.name() == 'ว่าง'} ? 'bg-green-100 text-green-600' : 
-                        (${item.status.name() == 'มีคำร้องขอ'} ? 'bg-yellow-100 text-yellow-600' : 
-                        'bg-red-100 text-gray-600')"
-									class="text-xs px-3 py-1 rounded-full font-medium"></span> <a
-									th:href="@{/items/{id}(id=${item.itemId})}"
+						(${item.status.name() == 'มีคำร้องขอ'} ? 'bg-yellow-100 text-yellow-600' : 
+						'bg-red-100 text-gray-600')"
+									class="text-xs px-3 py-1 rounded-full font-medium"> </span>
+
+								<!-- 🔹 ปุ่มดูรายละเอียด -->
+								<a th:href="@{/items/{id}(id=${item.itemId})}"
 									class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
 									ดูรายละเอียด </a>
+
+								<!-- 🔹 ปุ่มแก้ไข & ลบ (เฉพาะสถานะ “ว่าง”) -->
+								<div th:if="${item.status.name() == 'ว่าง'}"
+									class="flex gap-2 mt-2">
+
+									<!-- ปุ่มแก้ไข -->
+									<a th:href="@{/items/edit/{id}(id=${item.itemId})}"
+										class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
+										✏️ แก้ไข </a>
+
+									<!-- ปุ่มลบ -->
+									<form th:action="@{/items/delete/{id}(id=${item.itemId})}"
+										method="post" onsubmit="return confirmDeleteItem(event)">
+										<button type="submit"
+											class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
+											🗑️ ลบ</button>
+									</form>
+								</div>
 							</div>
 						</div>
 

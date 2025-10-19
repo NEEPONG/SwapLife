@@ -1,5 +1,6 @@
 package com.springboot.controller;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.model.*;
 import com.springboot.model.enums.ItemCondition;
+import com.springboot.model.enums.ItemStatus;
 import com.springboot.model.enums.ListingType;
 import com.springboot.service.*;
 
@@ -246,5 +248,78 @@ public class ItemController {
 	    model.addAttribute("isOwner", isOwner);
 	    return "item-details";
 	}
+	
+	@PostMapping("/delete/{id}")
+	public String deleteItem(@PathVariable Integer id, Authentication authentication, RedirectAttributes redirectAttributes) {
+	    String username = authentication.getName();
+	    User user = userService.findByUsername(username);
 
+	    boolean deleted = itemService.deleteItemByUser(id, user);
+	    if (deleted) {
+	        redirectAttributes.addFlashAttribute("successMessage", "ลบสิ่งของเรียบร้อยแล้ว!");
+	    } else {
+	        redirectAttributes.addFlashAttribute("errorMessage", "ไม่สามารถลบสิ่งของนี้ได้!");
+	    }
+
+	    return "redirect:/items/mine";
+	}
+	
+	@GetMapping("/edit/{id}")
+	public String showEditItemPage(@PathVariable Integer id, Authentication authentication, Model model) {
+	    String username = authentication.getName();
+	    User user = userService.findByUsername(username);
+	    
+	    Item item = itemService.getItemById(id);
+	    
+	    // ตรวจสอบสิทธิ์
+	    if (!item.getUser().equals(user)) {
+	        return "redirect:/items/mine?error=unauthorized";
+	    }
+	    
+	    // ตรวจสอบสถานะ - อนุญาตแก้ไขเฉพาะสินค้าที่ "ว่าง"
+	    if (item.getStatus() != ItemStatus.ว่าง) {
+	        return "redirect:/items/mine?error=cannot-edit";
+	    }
+	    
+	    model.addAttribute("item", item);
+	    model.addAttribute("categories", categoryService.getAllCategories());
+	    return "edit-item";
+	}
+
+	@PostMapping("/update/{id}")
+	public String updateItem(
+	        @PathVariable Integer id,
+	        @RequestParam("title") String title,
+	        @RequestParam("description") String description,
+	        @RequestParam("itemCondition") String itemConditionStr,
+	        @RequestParam("categoryId") Integer categoryId,
+	        @RequestParam("listingType") String listingTypeStr,
+	        @RequestParam(value = "desiredItems", required = false) String desiredItems,
+	        @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+	        @RequestParam(value = "images", required = false) List<MultipartFile> images,
+	        Authentication authentication,
+	        RedirectAttributes redirectAttributes) {
+	    
+	    try {
+	        String username = authentication.getName();
+	        User user = userService.findByUsername(username);
+	        
+	        boolean updated = itemService.updateItem(id, user, title, description, 
+	            itemConditionStr, categoryId, listingTypeStr, desiredItems, thumbnail, images);
+	        
+	        if (updated) {
+	            redirectAttributes.addFlashAttribute("successMessage", "✅ แก้ไขสินค้าเรียบร้อยแล้ว!");
+	            return "redirect:/items/mine";
+	        } else {
+	            redirectAttributes.addFlashAttribute("errorMessage", "❌ ไม่สามารถแก้ไขสินค้าได้!");
+	            return "redirect:/items/edit/" + id;
+	        }
+	        
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "เกิดข้อผิดพลาด: " + e.getMessage());
+	        return "redirect:/items/edit/" + id;
+	    }
+	}
+
+	
 }

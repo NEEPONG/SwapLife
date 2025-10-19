@@ -1,5 +1,6 @@
 package com.springboot.repository;
 
+import com.springboot.model.Item;
 import com.springboot.model.SwapOffer;
 import com.springboot.model.User;
 import com.springboot.model.enums.OfferStatus;
@@ -7,9 +8,11 @@ import com.springboot.model.enums.OfferStatus;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface SwapOfferRepository extends JpaRepository<SwapOffer, Integer> {
@@ -36,5 +39,14 @@ public interface SwapOfferRepository extends JpaRepository<SwapOffer, Integer> {
 		List<SwapOffer> findByRequester(@Param("requester") User requester);
 	
 	List<SwapOffer> findByRequesterAndStatusNot(User requester, OfferStatus status);
+	
+	@Transactional
+	@Modifying
+	@Query("""
+	    DELETE FROM SwapOffer so 
+	    WHERE so.offeredItem = :item OR so.requestedItem = :item
+	    """)
+	void deleteAllByOfferedItemOrRequestedItem(@Param("item") Item itemOffered, @Param("item") Item itemRequested);
+
 
 }
