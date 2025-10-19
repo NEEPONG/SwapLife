@@ -76,3 +76,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+function confirmCancelOffer(event, form) {
+  event.preventDefault();
+  Swal.fire({
+    title: "ยืนยันการยกเลิก?",
+    text: "คุณแน่ใจหรือไม่ที่จะยกเลิกคำร้องนี้",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "ยืนยัน",
+    cancelButtonText: "ยกเลิก"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit();
+    }
+  });
+  return false;
+}

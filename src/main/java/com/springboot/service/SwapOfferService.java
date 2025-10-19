@@ -92,5 +92,73 @@ public class SwapOfferService {
     );
   }
   
+  @Transactional
+  public void acceptOffer(Integer offerId) {
+      SwapOffer offer = swapOfferRepository.findById(offerId)
+              .orElseThrow(() -> new RuntimeException("ไม่พบคำร้องขอแลกเปลี่ยน"));
+
+      // ✅ อัปเดตสถานะคำร้อง
+      offer.setStatus(OfferStatus.ยอมรับ);
+
+      // ✅ อัปเดตสถานะ item ทั้งสองฝั่งให้เป็น “แลกแล้ว”
+      offer.getRequestedItem().setStatus(ItemStatus.แลกแล้ว);
+      offer.getOfferedItem().setStatus(ItemStatus.แลกแล้ว);
+
+      // ✅ บันทึกการเปลี่ยนแปลง
+      itemRepository.save(offer.getRequestedItem());
+      itemRepository.save(offer.getOfferedItem());
+      swapOfferRepository.save(offer);
+  }
+
+  @Transactional
+  public void rejectOffer(Integer offerId) {
+      SwapOffer offer = swapOfferRepository.findById(offerId)
+              .orElseThrow(() -> new RuntimeException("ไม่พบคำร้องขอแลกเปลี่ยน"));
+
+      // ✅ อัปเดตสถานะคำร้อง
+      offer.setStatus(OfferStatus.ปฏิเสธ);
+
+      // ✅ อัปเดตสถานะของ item ทั้งสองให้กลับมาเป็น “ว่าง”
+      offer.getRequestedItem().setStatus(ItemStatus.ว่าง);
+      offer.getOfferedItem().setStatus(ItemStatus.ว่าง);
+
+      // ✅ บันทึกลงฐานข้อมูล
+      itemRepository.save(offer.getRequestedItem());
+      itemRepository.save(offer.getOfferedItem());
+      swapOfferRepository.save(offer);
+  }
+  
+  public List<SwapOffer> getOfferHistoryByRequester(User user) {
+	    return swapOfferRepository.findByRequesterAndStatusNot(user, OfferStatus.รอดำเนินการ);
+  }
+  
+  @Transactional
+  public void cancelOffer(User user, Integer offerId) {
+      SwapOffer offer = swapOfferRepository.findById(offerId)
+          .orElseThrow(() -> new RuntimeException("ไม่พบคำร้องขอนี้"));
+
+      // ✅ ตรวจสอบสิทธิ์
+      if (!offer.getRequester().equals(user)) {
+          throw new RuntimeException("ไม่สามารถยกเลิกคำร้องของผู้อื่นได้");
+      }
+
+      // ✅ อนุญาตให้ยกเลิกเฉพาะที่ยังรอดำเนินการ
+      if (offer.getStatus() != OfferStatus.รอดำเนินการ) {
+          throw new RuntimeException("คำร้องนี้ไม่สามารถยกเลิกได้");
+      }
+
+      // ✅ เปลี่ยนสถานะ
+      offer.setStatus(OfferStatus.ปฏิเสธ);
+
+      // ✅ อัปเดตสถานะของ Item ที่เสนอให้กลับเป็น "ว่าง"
+      Item offeredItem = offer.getOfferedItem();
+      offeredItem.setStatus(ItemStatus.ว่าง);
+
+      swapOfferRepository.save(offer);
+      itemRepository.save(offeredItem);
+  }
+
+
+  
 }
 

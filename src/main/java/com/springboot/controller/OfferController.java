@@ -62,5 +62,40 @@ public class OfferController {
 	    return "redirect:/items/" + targetItemId + "?success=offerSent";
 	}
 	
+	@PostMapping("/swap/accept")
+    public String acceptOffer(@RequestParam Integer offerId, Authentication authentication) {
+        swapOfferService.acceptOffer(offerId);
+        return "redirect:/items/mine?status=requested&success=accepted";
+    }
+
+    @PostMapping("/swap/reject")
+    public String rejectOffer(@RequestParam Integer offerId, Authentication authentication) {
+        swapOfferService.rejectOffer(offerId);
+        return "redirect:/items/mine?status=requested&success=rejected";
+    }
+    
+    @GetMapping("/offers/history")
+    public String viewOfferHistory(Authentication authentication, Model model) {
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        // ดึงเฉพาะคำร้องที่ฉันส่ง และมีสถานะ != รอดำเนินการ
+        List<SwapOffer> sentOffers = swapOfferService.getOfferHistoryByRequester(user);
+
+        model.addAttribute("sentOffers", sentOffers);
+        model.addAttribute("user", user);
+        return "profile-items-history";
+    }
+    
+    @PostMapping("/swap/cancel")
+    public String cancelOffer(@RequestParam Integer offerId, Authentication authentication) {
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        swapOfferService.cancelOffer(user, offerId);
+
+        return "redirect:/offers/history?success=cancelled";
+    }
+
 }
 
