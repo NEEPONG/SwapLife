@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.springboot.model.Category;
 import com.springboot.model.User;
 import com.springboot.service.CategoryService;
+import com.springboot.service.ItemService;
 import com.springboot.service.UserService;
 
 @Controller
@@ -23,7 +24,7 @@ public class PageController {
 	 	private UserService userService;
 
 	    @Autowired
-	    private com.springboot.service.ItemService itemService;
+	    private ItemService itemService;
 
 	    @GetMapping("/")
 	    public String showHomePage(Model model) {
