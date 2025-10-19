@@ -78,7 +78,7 @@ body {
 						<div>
 							<div class="font-semibold text-gray-800"
 								th:text="${user.username}">username</div>
-							<a th:href="@{/profile/edit}"
+							<a th:href="@{/profile}"
 								class="text-xs text-green-600 hover:underline">✏️
 								แก้ไขข้อมูลส่วนตัว</a>
 						</div>
@@ -88,9 +88,10 @@ body {
 							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👤</span>
 							บัญชีของฉัน</a> <a th:href="@{/items/mine}"
 							class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium"><span>📦</span>
-							ของที่ฉันโพสต์</a> <a th:href="@{/notifications}"
-							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>🔔</span>
-							การแจ้งเตือน</a>
+							ของที่ฉันโพสต์</a>
+							<a th:href="@{/logout}"
+							class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 font-medium"><span>👋</span>
+							ออกจากระบบ</a>
 					</nav>
 				</div>
 			</aside>
@@ -106,11 +107,11 @@ body {
 							class="py-3 text-gray-600 hover:text-green-600">ทั้งหมด</a> <a
 							th:href="@{/items/mine(status='available')}"
 							th:classappend="${status == 'available'} ? 'active-tab' : ''"
-							class="py-3 text-gray-600 hover:text-green-600">รอคำร้องขอ</a> 
-							<a th:href="@{/items/mine(status='swapped')}"
+							class="py-3 text-gray-600 hover:text-green-600">รอคำร้องขอ</a> <a
+							th:href="@{/items/mine(status='swapped')}"
 							th:classappend="${status == 'swapped'} ? 'active-tab' : ''"
 							class="py-3 text-gray-600 hover:text-green-600">แลกเปลี่ยนสำเร็จ</a>
-							<a th:href="@{/items/mine(status='requested')}"
+						<a th:href="@{/items/mine(status='requested')}"
 							th:classappend="${status == 'requested'} ? 'active-tab' : ''"
 							class="py-3 text-gray-600 hover:text-green-600">คำร้องขอ</a>
 					</div>
@@ -148,8 +149,11 @@ body {
 							<!-- ขวา: ปุ่ม + สถานะ -->
 							<div class="flex flex-col items-end gap-2">
 								<span th:text="${item.status}"
-									class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-medium"></span>
-								<a th:href="@{/items/{id}(id=${item.itemId})}"
+									th:classappend="${item.status.name() == 'ว่าง'} ? 'bg-green-100 text-green-600' : 
+                        (${item.status.name() == 'มีคำร้องขอ'} ? 'bg-yellow-100 text-yellow-600' : 
+                        'bg-red-100 text-gray-600')"
+									class="text-xs px-3 py-1 rounded-full font-medium"></span> <a
+									th:href="@{/items/{id}(id=${item.itemId})}"
 									class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
 									ดูรายละเอียด </a>
 							</div>

@@ -18,32 +18,41 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     // User findByUsername(String username);
 	
 	@Query("""
-	        SELECT i FROM Item i
-	        JOIN i.category c
-	        WHERE 
-	            (:keyword = '' OR LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) 
-	             OR LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
-	             OR LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
-	        AND (:type = 'all' OR i.listingType = 
-	                CASE 
-	                    WHEN :type = 'swap' THEN 'แลกเปลี่ยน'
-	                    WHEN :type = 'donate' THEN 'บริจาค'
-	                    ELSE i.listingType
-	                END)
-	        AND (:category = 'all' OR LOWER(c.name) LIKE LOWER(CONCAT('%', :category, '%')))
-	        AND (:condition = 'all' OR i.itemCondition = 
-	                CASE 
-	                    WHEN :condition = 'new' THEN 'ใหม่'
-	                    WHEN :condition = 'good' THEN 'เหมือนใหม่'
-	                    WHEN :condition = 'fair' THEN 'ใช้งานแล้ว'
-	                    ELSE i.itemCondition
-	                END)
-	        ORDER BY i.createdAt DESC
-	        """)
-	    List<Item> searchAndFilter(@Param("keyword") String keyword,
-	                               @Param("type") String type,
-	                               @Param("category") String category,
-	                               @Param("condition") String condition);
+		    SELECT i FROM Item i
+		    JOIN i.category c
+		    WHERE
+		        i.status = :availableStatus
+
+		        AND (:keyword = '' OR LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		         OR LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		         OR LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+
+		        AND (:type = 'all' OR i.listingType =
+		                CASE
+		                    WHEN :type = 'swap' THEN 'แลกเปลี่ยน'
+		                    WHEN :type = 'donate' THEN 'บริจาค'
+		                    ELSE i.listingType
+		                END)
+
+		        AND (:category = 'all' OR LOWER(c.name) LIKE LOWER(CONCAT('%', :category, '%')))
+
+		        AND (:condition = 'all' OR i.itemCondition =
+		                CASE
+		                    WHEN :condition = 'new' THEN 'ใหม่'
+		                    WHEN :condition = 'good' THEN 'เหมือนใหม่'
+		                    WHEN :condition = 'fair' THEN 'ใช้งานแล้ว'
+		                    ELSE i.itemCondition
+		                END)
+
+		    ORDER BY i.createdAt DESC
+		""")
+		List<Item> searchFilteredItems(
+		    @Param("keyword") String keyword,
+		    @Param("type") String type,
+		    @Param("category") String category,
+		    @Param("condition") String condition,
+		    @Param("availableStatus") ItemStatus availableStatus
+		);
 	
 	List<Item> findByUserOrderByCreatedAtDesc(User user);
 	

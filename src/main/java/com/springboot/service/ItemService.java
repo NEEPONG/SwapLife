@@ -115,12 +115,7 @@ public class ItemService {
     public List<Item> searchAndFilter(String keyword, String type, String category, String condition) {
         keyword = (keyword == null) ? "" : keyword.trim().toLowerCase();
 
-        // ถ้าทั้งหมดเป็นค่าเริ่มต้น แสดงทั้งหมดเลย
-        if (keyword.isEmpty() && type.equals("all") && category.equals("all") && condition.equals("all")) {
-            return itemRepository.findAll();
-        }
-
-        return itemRepository.searchAndFilter(keyword, type, category, condition);
+        return itemRepository.searchFilteredItems(keyword, type, category, condition, ItemStatus.ว่าง);
     }
     
     public List<Item> findItemsByUser(User user) {
