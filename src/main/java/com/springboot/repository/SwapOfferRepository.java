@@ -48,5 +48,4 @@ public interface SwapOfferRepository extends JpaRepository<SwapOffer, Integer> {
 	    """)
 	void deleteAllByOfferedItemOrRequestedItem(@Param("item") Item itemOffered, @Param("item") Item itemRequested);
 
-
 }
