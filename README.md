@@ -1,94 +1,94 @@
 # SwapLife
 
-SwapLife is a **web-based item exchange platform** developed as part of the **Web Programming course**. The project focuses on creating a system where users can exchange items they no longer use instead of buying or throwing them away.
-
-This project is built to practice **Spring Boot**, **MVC architecture**, **database integration**, **security**, and **server-side rendering** using **Thymeleaf**.
-
-## Objectives
-
-* Practice building web applications with Spring Boot
-* Apply MVC architecture in a real project
-* Use MySQL with Spring Data JPA
-* Implement server-side rendering using Thymeleaf
-* Experiment with Spring Security and various dependencies
-* Apply classroom concepts in a practical project
+SwapLife is a web-based platform designed to facilitate item swapping between users. It allows users to post items they want to swap, browse items from others, and make swap offers.
 
 ## Features
 
-* User registration and login
-* Post unused items for exchange
-* Browse and view available items
-* Basic item exchange workflow
-* Admin / user role separation (basic)
+- **User Authentication**: Secure registration and login system.
+- **Item Management**:
+  - Post new items with details (title, description, condition, category, images).
+  - Edit and delete your own items.
+  - View item details.
+  - Search and filter items by keyword, type, category, and condition.
+- **Swap System**:
+  - Make swap offers on available items.
+  - View received and sent offers.
+  - (Implied) Accept or reject swap offers.
+- **Profile Management**: View your own items (available, swapped, etc.).
 
-> Note: This project is developed for educational purposes and focuses on core functionality rather than production-level features.
+## Technology Stack
 
-## Tech Stack
+- **Backend**: Java 22, Spring Boot 3.4.5
+- **Database**: MySQL
+- **ORM**: Spring Data JPA
+- **Template Engine**: Thymeleaf
+- **Security**: Spring Security
+- **Build Tool**: Maven
 
-* **Backend:** Spring Boot (Java)
-* **Database:** MySQL
-* **Template Engine:** Thymeleaf
-* **ORM:** Spring Data JPA
-* **Security:** Spring Security
+## Getting Started
 
-## Dependencies Used
+### Prerequisites
 
-This project experiments with multiple Spring Boot dependencies:
+- Java Development Kit (JDK) 22 or later
+- MySQL Server
+- Maven
 
-* `spring-boot-starter-web` – Web application and MVC support
-* `spring-boot-starter-data-jpa` – Database access using JPA
-* `mysql-connector-j` – MySQL database driver
-* `spring-boot-starter-thymeleaf` – Server-side HTML rendering
-* `spring-boot-starter-security` – Authentication and basic security
-* `lombok` – Reduce boilerplate code
-* `spring-boot-starter-validation` – DTO and form validation
-* `spring-boot-devtools` – Development-time tools (hot reload)
+### Installation
 
-## Installation
+1.  **Clone the repository:**
 
-1. Clone the repository
+    ```bash
+    git clone https://github.com/yourusername/SwapLife.git
+    cd SwapLife
+    ```
 
-```bash
-git clone https://github.com/your-username/SwapLife.git
-cd SwapLife
-```
+2.  **Database Configuration:**
 
-2. Configure MySQL
+    - Create a MySQL database named `swaplife`.
+    - Update the database credentials in `src/main/resources/application.properties` if they differ from the defaults:
+      ```properties
+      spring.datasource.url=jdbc:mysql://localhost:3307/swaplife?characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&useLegacyDatetimeCode=false
+      spring.datasource.username=root
+      spring.datasource.password=1234
+      ```
+    - _Note: The default port is configured to 3307. Adjust if your MySQL runs on the standard 3306 port._
 
-* Create a MySQL database (e.g. `swaplife_db`)
-* Update database credentials in `application.properties` or `application.yml`
+3.  **Build the application:**
 
-3. Run the application
+    ```bash
+    mvn clean install
+    ```
 
-```bash
-./mvnw spring-boot:run
-```
+4.  **Run the application:**
 
-4. Open your browser
+    ```bash
+    mvn spring-boot:run
+    ```
 
-```
-http://localhost:8080
-```
+5.  **Access the application:**
+    Open your browser and navigate to `http://localhost:8081`.
 
-## Project Scope
+## Configuration
 
-* Academic project for Web Programming course
-* Focus on backend logic and MVC flow
-* Basic UI using Thymeleaf
-* Not intended for production use
+- **Server Port**: 8081 (Default)
+- **File Uploads**:
+  - Images are stored in `./uploads`.
+  - Max file size: 10MB.
+  - Max request size: 50MB.
 
-## Future Improvements
+## Project Structure
 
-* Item matching and recommendation system
-* Image upload for items
-* Messaging system between users
-* Improved UI/UX
-* Notification system
+- `src/main/java/com/springboot`: Contains the Java source code.
+  - `controller`: Web controllers for handling requests.
+  - `model`: Entity classes representing database tables.
+  - `repository`: Data access interfaces.
+  - `service`: Business logic layer.
+  - `config`: Configuration classes.
+- `src/main/resources`:
+  - `templates`: Thymeleaf HTML templates.
+  - `static`: Static assets (CSS, JS, images).
+  - `application.properties`: Application configuration.
 
-## Author
+## License
 
-Developed by SwapLife team (Student Project)
-
----
-
-This project is created as part of a Web Programming course assignment using Spring Boot.
+[MIT License](LICENSE) (Assuming MIT, please verify)
